@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 from scapy.all import *
-from numpy import *
+from math import log
 
 true = True
 false = False
@@ -16,51 +16,43 @@ arp_count = 0
 eth = dict()
 arp = dict()
 
-def entropy():
-	global eth
-	entropy = 0
-	for key in eth:
-		p = (float(eth[key]) / float(eth_count))
-		entropy += p * -log2(p)
-	return entropy
+def eth_entropy():
+	global eth, eth_count
+	entropy = .0
 
-def arp_entropy():
-	global arp
-	entropy = 0
-	for key in arp:
-		p = (float(arp[key]) / float(arp_count))
-		entropy += p * -log2(p)
+	if eth_count > 0:
+		for hwsrc in eth:
+			for hwdst in eth[hwsrc]:
+				for etype in eth[hwsrc][hwdst]:
+					c = eth[hwsrc][hwdst][etype]
+					p = (float(c) / float(eth_count))
+					entropy += p * -(log(p)/log(2))
 	return entropy
 
 def packet_captured(packet):
-	global eth, arp, eth_count, arp_count
+	global eth, eth_count
 
 	eth_count += 1
-
-	eth_hw_src = packet[Ether].src
-	eth_hw_dst = packet[Ether].dst
-	eth_type = packet[Ether].type
 	
-	if eth_hw_src not in eth:
-		eth[eth_hw_src] = 0
+	hwsrc = packet[Ether].src
+	hwdst = packet[Ether].dst
+	etype = packet[Ether].type 
+	
+	if hwsrc not in eth:
+		eth[hwsrc] = dict()
+
+	if hwdst not in eth[hwsrc]:
+		eth[hwsrc][hwdst] = dict()
+
+	if etype not in eth[hwsrc][hwdst]:
+		eth[hwsrc][hwdst][etype] = 1
 	else:
-		eth[eth_hw_src] += 1
+		eth[hwsrc][hwdst][etype] += 1
 
-	if eth_type == TYPE_ARP:
-		arp_count += 1
-		arp_ip_src = packet[ARP].psrc
-		arp_ip_dst = packet[ARP].pdst
-		arp_hw_src = packet[ARP].hwsrc
-		arp_hw_dst = packet[ARP].hwdst
-		arp_type = packet[ARP].op
+	eth_ent = eth_entropy()
 
-		if arp_ip_src not in arp:
-			arp[arp_ip_src] = 0
-		else:
-			arp[arp_ip_src] += 1
-
-	arp_ent = arp_entropy() if arp_count > 0 else -1.0
-
-	print 'eth: {} arp: {}'.format(entropy(), arp_ent)
+	print 'Ethernet Entropy: {}'.format(eth_ent)
+		
+		
 
 sniff(filter='', prn=packet_captured)
