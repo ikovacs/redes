@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+import threading
+
 from scapy.all import *
 from math import log
 
@@ -48,6 +50,7 @@ def arp_entropy():
 				p = (float(c) / float(arp_count))
 				entropy += p * -(log(p)/log(2))
 
+	print 'ARP Entropy: {}'.format(entropy)
 	return entropy
 
 def eth_packet(packet):
@@ -70,9 +73,9 @@ def eth_packet(packet):
 	else:
 		eth[hwsrc][hwdst][etype] += 1
 
-	eth_ent = eth_entropy()
+	#eth_ent = eth_entropy()
 
-	print 'Ethernet Entropy: {}'.format(eth_ent)
+	#print 'Ethernet Entropy: {}'.format(eth_ent)
 
 def arp_packet(packet):
 	global arp, arp_count
@@ -94,9 +97,9 @@ def arp_packet(packet):
 	else:
 		arp[psrc][pdst][RLY] += 1
 
-	arp_ent = arp_entropy()
+	#arp_ent = arp_entropy()
 
-	print 'ARP Entropy: {}'.format(arp_ent)
+	#
 
 
 def packet_captured(packet):
@@ -107,4 +110,8 @@ def packet_captured(packet):
 	except Exception, e:
 		print e
 
+t = threading.Timer(5.0, arp_entropy)
+t.start()
+
 sniff(filter='', prn=packet_captured)
+
