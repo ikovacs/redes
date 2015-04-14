@@ -15,8 +15,10 @@ class MainWindow(QMainWindow):
 		self.sniffing = False
 		self.packetCount = 0
 		self.arpPackets = 0
-		self.arpReplies = 0
-		self.arpRequests = 0
+		self.arpReplyCount = 0
+		self.arpRequestCount = 0
+		self.arpReplies = dict()
+		self.arpRequests = dict()
 
 	def onCaptureButtonToggled(self, checked):
 		if self.sniffing != checked:
@@ -40,10 +42,16 @@ class MainWindow(QMainWindow):
 			self.arpPackets += 1
 			if packet[ARP].op == ARP_REQUEST:
 				arpType = 'Request'
-				self.arpRequests += 1
+				self.arpRequestCount += 1
+
+				if packet[ARP].psrc not in self.arpRequests:
+					self.arpRequests[packet[ARP].psrc] = 0
+				else:
+					self.arpRequests[packet[ARP].psrc] += 1
+
 			else:
 				arpType = 'Reply'
-				self.arpReplies += 1
+				self.arpReplyCount += 1
 
 			self.ui.packetList.addItem('{:^7s} {:^17s} {:^16s} {:^17s} {:^16s}'.format(
 				arpType,
@@ -56,8 +64,8 @@ class MainWindow(QMainWindow):
 				'{:d} packets, {:d} ARP packets, {:d} ARP Requests {:d} ARP Replies '.format(
 					self.packetCount,
 					self.arpPackets,
-					self.arpRequests,
-					self.arpReplies))
+					self.arpRequestCount,
+					self.arpReplyCount))
 
 	def entropy(self):
 		pass
