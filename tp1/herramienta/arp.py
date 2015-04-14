@@ -1,7 +1,5 @@
 #!/usr/bin/env python2
 
-import threading
-
 from scapy.all import *
 from math import log
 
@@ -20,7 +18,6 @@ arp_count = 0
 
 eth = dict()
 arp = dict()
-arp2 = dict()
 
 def eth_entropy():
 	global eth, eth_count
@@ -110,8 +107,4 @@ def packet_captured(packet):
 	except Exception, e:
 		print e
 
-t = threading.Timer(5.0, arp_entropy)
-t.start()
-
 sniff(filter='', prn=packet_captured)
-
