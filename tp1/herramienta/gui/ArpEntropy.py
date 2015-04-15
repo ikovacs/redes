@@ -12,6 +12,8 @@ REQ = 1
 
 class ArpEntropy(QObject):
 
+	resultReady = pyqtSignal(float)
+
 	def __init__(self, parent=None):
 		super(ArpEntropy, self).__init__(parent)
 		self.arpPackets = dict()
@@ -23,19 +25,15 @@ class ArpEntropy(QObject):
 			self.add(packet)
 
 	def add(self, packet):
-
 		self.arpPacketsCount += 1
-
 		psrc = packet[ARP].psrc
 		pdst = packet[ARP].pdst
 		request = True if packet[ARP].op == ARP_REQUEST else False
-
 		if psrc not in self.arpPackets:
 			self.arpPackets[psrc] = dict()
 
 		if pdst not in self.arpPackets[psrc]:
 			self.arpPackets[psrc][pdst] = [0, 0]
-
 		if request:
 			self.arpPackets[psrc][pdst][REQ] += 1
 		else:
@@ -53,4 +51,5 @@ class ArpEntropy(QObject):
 				if c > 0:
 					p = (float(c) / float(self.arpPacketsCount))
 					entropy += p * -(log(p)/log(2))
+		self.resultReady.emit(entropy)
 		return entropy

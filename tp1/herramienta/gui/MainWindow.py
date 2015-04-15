@@ -22,9 +22,6 @@ class MainWindow(QMainWindow):
 		self.ui.actionReset.triggered.connect(self.onResetCapture)
 		self.ui.actionQuit.triggered.connect(self.close)
 		#
-		self.timer = QTimer(self)
-		self.timer.timeout.connect(self.updateEntropy)
-		#
 		self.arpPackets = list()
 		self.ethPackets = list()
 		#
@@ -39,6 +36,22 @@ class MainWindow(QMainWindow):
 		#
 		self.maxArpEntropy = [0, -1]
 		self.maxEthEntropy = [0, -1]
+		#
+		self.ethEntropyThread = QThread()
+		self.ethEntropy = EtherEntropy()
+		self.ethEntropyThread.started.connect(self.ethEntropy.entropy)
+		self.ethEntropy.resultReady.connect(self.onEthEntropyReady)
+		self.ethEntropy.resultReady.connect(self.ethEntropyThread.quit)
+		#
+		self.arpEntropyThread = QThread()
+		self.arpEntropy = ArpEntropy()
+		self.arpEntropyThread.started.connect(self.arpEntropy.entropy)
+		self.arpEntropy.resultReady.connect(self.onArpEntropyReady)
+		self.arpEntropy.resultReady.connect(self.arpEntropyThread.quit)
+		#
+		self.timer = QTimer(self)
+		self.timer.timeout.connect(self.updateEntropy)
+		#
 
 	def saveCapture(self):
 		pass
@@ -48,9 +61,10 @@ class MainWindow(QMainWindow):
 		pass
 
 	def calcEthernetEntropy(self):
-		ent = EtherEntropy()
-		ent.addAll(self.ethPackets)
-		ans = ent.entropy()
+		self.ethEntropy.addAll(self.ethPackets)
+		self.ethEntropyThread.start()
+
+	def onEthEntropyReady(self, ans):
 		self.ui.ethEntropyLabel.setText('Ethernet: {:.4f}'.format(ans))
 		if self.maxEthEntropy[1] < ans:
 			now = datetime.strftime(datetime.now(), '%H:%M:%S') #%Y-%m-%d %H:%M:%S
@@ -60,12 +74,8 @@ class MainWindow(QMainWindow):
 					self.maxEthEntropy[1],
 					self.maxEthEntropy[0]))
 
-	def calcArpEntropy(self):
-		ent = ArpEntropy()
-		ent.addAll(self.arpPackets)
-		ans = ent.entropy()
+	def onArpEntropyReady(self, ans):
 		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ans))
-
 		if self.maxArpEntropy[1] < ans:
 			now = datetime.strftime(datetime.now(), '%H:%M:%S')
 			self.maxArpEntropy = [ now, ans ]
@@ -74,8 +84,12 @@ class MainWindow(QMainWindow):
 					self.maxArpEntropy[1],
 					self.maxArpEntropy[0]))
 
+	def calcArpEntropy(self):
+		self.arpEntropy.addAll(self.arpPackets)
+		self.arpEntropyThread.start()
+
 	def updateEntropy(self):
-		self.calcArpEntropy() # si son muchos paquetes tirar en un thread, no hay que cargar mucho el UI Thread (supongo)
+		self.calcArpEntropy()
 		self.calcEthernetEntropy()
 
 	def updateStatics(self):
