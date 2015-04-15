@@ -10,6 +10,8 @@ from datetime import datetime
 
 ONE_SECOND = 1000
 
+MILLIS_200 = 200
+
 class MainWindow(QMainWindow):
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
@@ -52,12 +54,18 @@ class MainWindow(QMainWindow):
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.updateEntropy)
 		#
+		self.timer2 = QTimer(self)
+		self.timer2.timeout.connect(self.updateStatics)
+		self.timer2.start(MILLIS_200)
+		#
 
 	def saveCapture(self):
+		# FORMATO? QUE ONDA?!!!
 		pass
 
 	def X(self):
-		# top 10 ip requests
+		# top 10 ip replies, por logica si una ip manda muchas replies es que tiene muchas request por lo que es muy solicitada, un server?
+		# de esa forma podemos destacar ip replies
 		pass
 
 	def calcEthernetEntropy(self):
@@ -99,7 +107,7 @@ class MainWindow(QMainWindow):
 
 	def onPacketCaptured(self, packet):
 		self.packets += 1
-		self.updateStatics()
+		#self.updateStatics()
 
 		if Ether in packet:
 			self.processEthernetPacket(packet)
