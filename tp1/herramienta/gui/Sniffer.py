@@ -11,10 +11,27 @@ class Sniffer(QObject):
 	def __init__(self, parent=None):
 		super(Sniffer, self).__init__(parent)
 		self.stopped = True
+		self.timeout = None
+		self.packets = None
+		self.store = 0
+
+	def setTimeout(self, seconds):
+		self.timeout = seconds
+
+	def setStorePackets(self, store):
+		if store:
+			self.store = 1
+		else:
+			self.store = 0
+
+	def getCapturedPackets(self):
+		return self.packets
 
 	def sniff(self):
 		self.stopped = False
-		sniff(prn=self.gotPacket,stop_filter=self.stopFilter)
+		self.packets = sniff(store=self.store, prn=self.gotPacket,stop_filter=self.stopFilter, timeout=self.timeout)
+		self.stopped = True # Stopped
+		self.timeout = None # Restore
 		self.finished.emit()
 
 	def gotPacket(self, packet):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
-    <height>380</height>
+    <width>311</width>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,23 +85,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QListWidget" name="logList">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>30</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>587</width>
+     <width>311</width>
      <height>27</height>
     </rect>
    </property>
@@ -115,6 +105,7 @@
     <property name="title">
      <string>Capture</string>
     </property>
+    <addaction name="actionInterval"/>
     <addaction name="actionStart"/>
     <addaction name="actionStop"/>
     <addaction name="actionReset"/>
@@ -146,6 +137,9 @@
    </property>
   </action>
   <action name="actionStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
@@ -153,6 +147,11 @@
   <action name="actionReset">
    <property name="text">
     <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionInterval">
+   <property name="text">
+    <string>Interval</string>
    </property>
   </action>
  </widget>

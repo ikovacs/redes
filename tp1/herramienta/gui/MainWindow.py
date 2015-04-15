@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
 		#
-		self.ui.actionStop.setEnabled(False)
+		self.ui.actionInterval.triggered.connect(self.onCaptureInterval)
 		self.ui.actionStart.triggered.connect(self.onCaptureStart)
 		self.ui.actionStop.triggered.connect(self.onCaptureStop)
 		self.ui.actionReset.triggered.connect(self.onResetCapture)
@@ -48,7 +48,7 @@ class MainWindow(QMainWindow):
 		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ent.entropy()))
 
 	def updateEntropy(self):
-		self.calcArpEntropy() # si son muchos paquetes tirar en un thread
+		self.calcArpEntropy() # si son muchos paquetes tirar en un thread, no hay que cargar mucho el UI Thread (supongo)
 		self.calcEthernetEntropy()
 
 	def updateStatics(self):
@@ -66,13 +66,21 @@ class MainWindow(QMainWindow):
 		if ARP in packet:
 			self.processArpPacket(packet)
 
+	def onCaptureInterval(self):
+		minutes, ok = QInputDialog.getInt(self, "Capture", "Minutes")
+		if ok:
+			self.sniffer.setTimeout(minutes * 60)
+			self.onCaptureStart()
+
 	def onCaptureStart(self):
+		self.ui.actionInterval.setEnabled(False)
 		self.ui.actionStart.setEnabled(False)
 		self.ui.actionStop.setEnabled(True)
 		self.thread.start()
 		self.timer.start(ONE_SECOND)
 
 	def onCaptureStop(self):
+		self.ui.actionInterval.setEnabled(True)
 		self.ui.actionStart.setEnabled(True)
 		self.ui.actionStop.setEnabled(False)
 		self.sniffer.stop()
