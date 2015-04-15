@@ -6,63 +6,102 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>438</height>
+    <width>587</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ARP Sniffer</string>
+   <string>Sniffer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QComboBox" name="deviceBox"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="filterEdit">
-        <property name="placeholderText">
-         <string>Filter Expression</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="captureButton">
-        <property name="text">
-         <string>Capture</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QListWidget" name="packetList">
-      <property name="font">
-       <font>
-        <family>Monospace</family>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="packetCountLabel">
-      <property name="text">
-       <string>packets: 0</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <widget class="QGroupBox" name="staticsBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>191</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Statics</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="packetsLabel">
+       <property name="text">
+        <string>Packets: 0</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="ethPacketsLabel">
+       <property name="text">
+        <string>Ethernet Packets: 0</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="arpPacketsLabel">
+       <property name="text">
+        <string>ARP Packets: 0</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QGroupBox" name="entropyBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>191</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Entropy</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="ethEntropyLabel">
+       <property name="text">
+        <string>Ethernet: -1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="arpEntropyLabel">
+       <property name="text">
+        <string>ARP: -1</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QListWidget" name="logList">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>621</width>
+     <width>587</width>
      <height>27</height>
     </rect>
    </property>
@@ -72,12 +111,48 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuCatuper">
+    <property name="title">
+     <string>Capture</string>
+    </property>
+    <addaction name="actionStart"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionReset"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuCatuper"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionStart">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
    </property>
   </action>
  </widget>

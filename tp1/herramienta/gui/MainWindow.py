@@ -1,72 +1,91 @@
-#!/usr/bin/env python2
 
-from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QMainWindow
-from ui_MainWindow import *
-from Sniffer import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from ui_MainWindow import Ui_MainWindow
+from Sniffer import Sniffer
+from scapy.all import *
+from ArpEntropy import ArpEntropy
+from EtherEntropy import EtherEntropy
+
+ONE_SECOND = 1000
 
 class MainWindow(QMainWindow):
-
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
-		self.ui.captureButton.toggled.connect(self.onCaptureButtonToggled)
-		self.sniffing = False
-		self.packetCount = 0
-		self.arpPackets = 0
-		self.arpReplyCount = 0
-		self.arpRequestCount = 0
-		self.arpReplies = dict()
-		self.arpRequests = dict()
+		#
+		self.ui.actionStop.setEnabled(False)
+		self.ui.actionStart.triggered.connect(self.onCaptureStart)
+		self.ui.actionStop.triggered.connect(self.onCaptureStop)
+		self.ui.actionReset.triggered.connect(self.onResetCapture)
+		self.ui.actionQuit.triggered.connect(self.close)
+		#
+		self.timer = QTimer(self)
+		self.timer.timeout.connect(self.updateEntropy)
+		#
+		self.arpPackets = list()
+		self.ethPackets = list()
+		#
+		self.sniffer = Sniffer()
+		self.sniffer.packetCaptured.connect(self.onPacketCaptured)
+		self.thread = QThread()
+		self.sniffer.moveToThread(self.thread)
+		self.thread.started.connect(self.sniffer.sniff)
+		self.sniffer.finished.connect(self.thread.quit)
+		#
+		self.packets = 0
+		#
 
-	def onCaptureButtonToggled(self, checked):
-		if self.sniffing != checked:
-			if checked:
-				self.sniffing = True
-				self.sniffer = Sniffer()
-				self.snifferThread = QThread()
-				self.sniffer.moveToThread(self.snifferThread)
-				self.sniffer.packetCaptured.connect(self.onPacketCaptured)
-				self.snifferThread.started.connect(self.sniffer.sniff)
-				self.snifferThread.start()
-			else:
-				self.sniffing = False
-				self.sniffer.stop()
+	def calcEthernetEntropy(self):
+		ent = EtherEntropy()
+		ent.addAll(self.ethPackets)
+		self.ui.ethEntropyLabel.setText('Ethernet: {:.4f}'.format(ent.entropy()))
+
+	def calcArpEntropy(self):
+		ent = ArpEntropy()
+		ent.addAll(self.arpPackets)
+		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ent.entropy()))
+
+	def updateEntropy(self):
+		self.calcArpEntropy() # si son muchos paquetes tirar en un thread
+		self.calcEthernetEntropy()
+
+	def updateStatics(self):
+		self.ui.packetsLabel.setText('Packets: {:d}'.format(self.packets))
+		self.ui.ethPacketsLabel.setText('Ethernet Packets: {:d}'.format(len(self.ethPackets)))
+		self.ui.arpPacketsLabel.setText('ARP Packets: {:d}'.format(len(self.arpPackets)))
 
 	def onPacketCaptured(self, packet):
+		self.packets += 1
+		self.updateStatics()
+
+		if Ether in packet:
+			self.processEthernetPacket(packet)
 		
-		self.packetCount += 1
-		
-		if packet[Ether].type == ARP_TYPE:
-			self.arpPackets += 1
-			if packet[ARP].op == ARP_REQUEST:
-				arpType = 'Request'
-				self.arpRequestCount += 1
+		if ARP in packet:
+			self.processArpPacket(packet)
 
-				if packet[ARP].psrc not in self.arpRequests:
-					self.arpRequests[packet[ARP].psrc] = 0
-				else:
-					self.arpRequests[packet[ARP].psrc] += 1
+	def onCaptureStart(self):
+		self.ui.actionStart.setEnabled(False)
+		self.ui.actionStop.setEnabled(True)
+		self.thread.start()
+		self.timer.start(ONE_SECOND)
 
-			else:
-				arpType = 'Reply'
-				self.arpReplyCount += 1
+	def onCaptureStop(self):
+		self.ui.actionStart.setEnabled(True)
+		self.ui.actionStop.setEnabled(False)
+		self.sniffer.stop()
+		self.timer.stop()
 
-			self.ui.packetList.addItem('{:^7s} {:^17s} {:^16s} {:^17s} {:^16s}'.format(
-				arpType,
-				packet[ARP].hwsrc,
-				packet[ARP].psrc,
-				packet[ARP].hwdst,
-				packet[ARP].pdst))
+	def onResetCapture(self):
+		self.packets = 0
+		self.ethPackets = list()
+		self.arpPackets = list()
+		self.updateStatics()
 
-		self.ui.packetCountLabel.setText(
-				'{:d} packets, {:d} ARP packets, {:d} ARP Requests {:d} ARP Replies '.format(
-					self.packetCount,
-					self.arpPackets,
-					self.arpRequestCount,
-					self.arpReplyCount))
+	def processEthernetPacket(self, packet):
+		self.ethPackets.append(packet) # Por ahora solo guardo el paquete
 
-	def entropy(self):
-		pass
-		# entropy = sum( P(a) * I(a) )
+	def processArpPacket(self, packet):
+		self.arpPackets.append(packet) # Por ahora solo guardo el paquete

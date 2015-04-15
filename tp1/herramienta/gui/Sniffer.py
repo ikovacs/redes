@@ -1,21 +1,27 @@
-#!/usr/bin/env python2
 
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 from scapy.all import *
-
-ARP_REPLY = 2
-ARP_REQUEST = 1
-ARP_TYPE = 0x806
 
 class Sniffer(QObject):
 
 	packetCaptured = pyqtSignal(scapy.layers.l2.Ether)
+	finished = pyqtSignal()
 
 	def __init__(self, parent=None):
 		super(Sniffer, self).__init__(parent)
+		self.stopped = True
 
 	def sniff(self):
-		sniff(filter='', prn=self.packetReceived) # All Ehternet?
+		self.stopped = False
+		sniff(prn=self.gotPacket,stop_filter=self.stopFilter)
+		self.finished.emit()
 
-	def packetReceived(self, packet):
+	def gotPacket(self, packet):
 		self.packetCaptured.emit(packet)
+
+	def stopFilter(self, packet):
+		return self.stopped
+
+	def stop(self):
+		self.stopped = True
