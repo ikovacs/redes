@@ -6,6 +6,7 @@ from Sniffer import Sniffer
 from scapy.all import *
 from ArpEntropy import ArpEntropy
 from EtherEntropy import EtherEntropy
+from datetime import datetime
 
 ONE_SECOND = 1000
 
@@ -36,16 +37,42 @@ class MainWindow(QMainWindow):
 		#
 		self.packets = 0
 		#
+		self.maxArpEntropy = [0, -1]
+		self.maxEthEntropy = [0, -1]
+
+	def saveCapture(self):
+		pass
+
+	def X(self):
+		# top 10 ip requests
+		pass
 
 	def calcEthernetEntropy(self):
 		ent = EtherEntropy()
 		ent.addAll(self.ethPackets)
-		self.ui.ethEntropyLabel.setText('Ethernet: {:.4f}'.format(ent.entropy()))
+		ans = ent.entropy()
+		self.ui.ethEntropyLabel.setText('Ethernet: {:.4f}'.format(ans))
+		if self.maxEthEntropy[1] < ans:
+			now = datetime.strftime(datetime.now(), '%H:%M:%S') #%Y-%m-%d %H:%M:%S
+			self.maxEthEntropy = [ now, ans ]
+			self.ui.maxEthEntropyLabel.setText(
+				'Max: {:.4f} ({})'.format(
+					self.maxEthEntropy[1],
+					self.maxEthEntropy[0]))
 
 	def calcArpEntropy(self):
 		ent = ArpEntropy()
 		ent.addAll(self.arpPackets)
-		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ent.entropy()))
+		ans = ent.entropy()
+		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ans))
+
+		if self.maxArpEntropy[1] < ans:
+			now = datetime.strftime(datetime.now(), '%H:%M:%S')
+			self.maxArpEntropy = [ now, ans ]
+			self.ui.maxArpEntropyLabel.setText(
+				'Max: {:.4f} ({})'.format(
+					self.maxArpEntropy[1],
+					self.maxArpEntropy[0]))
 
 	def updateEntropy(self):
 		self.calcArpEntropy() # si son muchos paquetes tirar en un thread, no hay que cargar mucho el UI Thread (supongo)

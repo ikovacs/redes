@@ -14,77 +14,89 @@
    <string>Sniffer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="staticsBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>191</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Statics</string>
-    </property>
-    <property name="flat">
-     <bool>false</bool>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="packetsLabel">
-       <property name="text">
-        <string>Packets: 0</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="ethPacketsLabel">
-       <property name="text">
-        <string>Ethernet Packets: 0</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="arpPacketsLabel">
-       <property name="text">
-        <string>ARP Packets: 0</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="entropyBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>191</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Entropy</string>
-    </property>
-    <property name="flat">
-     <bool>false</bool>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="ethEntropyLabel">
-       <property name="text">
-        <string>Ethernet: -1</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="arpEntropyLabel">
-       <property name="text">
-        <string>ARP: -1</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <widget class="QGroupBox" name="staticsBox">
+      <property name="title">
+       <string>Statics</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="packetsLabel">
+         <property name="text">
+          <string>Packets: 0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="ethPacketsLabel">
+         <property name="text">
+          <string>Ethernet Packets: 0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="arpPacketsLabel">
+         <property name="text">
+          <string>ARP Packets: 0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="entropyBox">
+      <property name="title">
+       <string>Entropy</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="ethEntropyLabel">
+           <property name="text">
+            <string>Ethernet: -1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="arpEntropyLabel">
+           <property name="text">
+            <string>ARP: -1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="maxEthEntropyLabel">
+           <property name="text">
+            <string>Max: undef</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="maxArpEntropyLabel">
+           <property name="text">
+            <string>Max: undef</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
