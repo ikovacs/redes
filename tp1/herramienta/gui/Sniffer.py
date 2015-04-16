@@ -29,7 +29,7 @@ class Sniffer(QObject):
 
 	def sniff(self):
 		self.stopped = False
-		self.packets = sniff(store=self.store, prn=self.gotPacket,stop_filter=self.stopFilter, timeout=self.timeout)
+		self.packets = sniff(store=self.store, prn=self.gotPacket, stop_filter=self.stopFilter, timeout=self.timeout)
 		self.stopped = True # Stopped
 		self.timeout = None # Restore
 		self.finished.emit()

@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
 		pass
 
 	def calcEthernetEntropy(self):
-		self.ethEntropy.addAll(self.ethPackets)
+		#self.ethEntropy.addAll(self.ethPackets)
 		self.ethEntropyThread.start()
 
 	def onEthEntropyReady(self, ans):
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow):
 		self.arpEntropies.append(ans)
 
 	def calcArpEntropy(self):
-		self.arpEntropy.addAll(self.arpPackets)
+		#self.arpEntropy.addAll(self.arpPackets)
 		self.arpEntropyThread.start()
 
 	def updateEntropy(self):
@@ -177,6 +177,8 @@ class MainWindow(QMainWindow):
 
 	def processEthernetPacket(self, packet):
 		self.ethPackets.append(packet) # Por ahora solo guardo el paquete
+		self.ethEntropy.add(packet)
 
 	def processArpPacket(self, packet):
 		self.arpPackets.append(packet) # Por ahora solo guardo el paquete
+		self.arpEntropy.add(packet)
