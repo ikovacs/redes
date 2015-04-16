@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
 		self.sniffer.moveToThread(self.thread)
 		self.thread.started.connect(self.sniffer.sniff)
 		self.sniffer.finished.connect(self.thread.quit)
+		self.sniffer.finished.connect(self.onCaptureStop)
 		#
 		self.packets = 0
 		#
