@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
 		#
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.updateEntropy)
+		self.timer.timeout.connect(self.onCountDown)
 		self.timer.start(ONE_SECOND)
 		#
 		self.timer2 = QTimer(self)
@@ -68,8 +69,11 @@ class MainWindow(QMainWindow):
 		self.ui.actionSaveEntropy.triggered.connect(self.saveEntropy)
 		#
 		self.ui.statusbar.showMessage("Ready")
+		#
+		self.ui.progressBar.hide()
 
 	def onSniffTimeout(self):
+		self.ui.progressBar.hide()
 		msg = QMessageBox(self)
 		msg.setText("Capture Done!")
 		msg.setWindowTitle("Sniffer")
@@ -84,6 +88,7 @@ class MainWindow(QMainWindow):
 				hwsrc = packet[Ether].src
 				hwdst = packet[Ether].dst
 				etype = str(packet[Ether].type)
+				# eth macfuente macdestino tipo
 				line = '{} {} {} {}\n'.format('eth', hwsrc, hwdst, etype)
 				fle.write(line)
 			for packet in self.arpPackets:
@@ -92,6 +97,7 @@ class MainWindow(QMainWindow):
 				hwsrc = packet[ARP].hwsrc
 				hwdst = packet[ARP].hwdst
 				operation = str(packet[ARP].op)
+				# arp ipfuente ipdestino macfuente macdestino operacion(request/reply)
 				line = '{} {} {} {} {} {}\n'.format('arp',
 					psrc, pdst,
 					hwsrc, hwdst, operation)
@@ -104,7 +110,8 @@ class MainWindow(QMainWindow):
 		fileName = fileName[0]
 		if fileName != "":
 			fle = open(fileName, 'w+')
-			for i in range(len(self.ethEntropies)):
+			min = len(self.ethEntropies) if len(self.ethEntropies) < len(self.arpEntropies) else len(self.ethEntropies)
+			for i in range(min):
 				line = '{} {} {}\n'.format(i, self.ethEntropies[i], self.arpEntropies[i])
 				fle.write(line)
 			fle.close()
@@ -163,8 +170,18 @@ class MainWindow(QMainWindow):
 	def onCaptureInterval(self):
 		minutes, ok = QInputDialog.getInt(self, "Capture", "Minutes")
 		if ok:
-			self.sniffer.setTimeout(minutes * 60)
+			seconds = minutes * 60
+			self.sniffer.setTimeout(seconds)
 			self.onCaptureStart()
+			self.ui.progressBar.show()
+			self.ui.progressBar.setRange(0, seconds)
+			self.ui.progressBar.setValue(0)
+
+	def onCountDown(self):
+		value = self.ui.progressBar.value()
+		max = self.ui.progressBar.maximum()
+		if value < max:
+			self.ui.progressBar.setValue(value + 1)
 
 	def onCaptureStart(self):
 		self.ui.actionInterval.setEnabled(False)

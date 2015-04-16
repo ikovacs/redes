@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(390, 274)
+        MainWindow.resize(390, 309)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -55,6 +55,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.maxArpEntropyLabel)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.verticalLayout_4.addWidget(self.entropyBox)
+        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setTextVisible(True)
+        self.progressBar.setObjectName("progressBar")
+        self.verticalLayout_4.addWidget(self.progressBar)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 390, 27))
