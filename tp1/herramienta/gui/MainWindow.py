@@ -177,8 +177,8 @@ class MainWindow(QMainWindow):
 		self.arpPackets = list()
 		self.arpEntropy.clean()
 		self.ethEntropy.clean()
-		self.maxArpEntropy = 0.0
-		self.maxEthEntropy = 0.0
+		self.maxArpEntropy = [0, -1]
+		self.maxEthEntropy = [0, -1]
 		self.updateStatics()
 
 	def processEthernetPacket(self, packet):

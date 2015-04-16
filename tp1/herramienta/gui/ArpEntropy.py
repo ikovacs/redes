@@ -21,6 +21,7 @@ class ArpEntropy(QObject):
 
 	def clean(self):
 		self.arpPackets = dict()
+		self.arpPacketsCount = 0
 
 	def addAll(self, packets):
 		self.arpPacketsCount += len(packets)
@@ -29,7 +30,6 @@ class ArpEntropy(QObject):
 
 	def add(self, packet):
 		self.arpPacketsCount += 1
-
 		psrc = packet[ARP].psrc
 		pdst = packet[ARP].pdst
 		hwsrc = packet[ARP].hwsrc
