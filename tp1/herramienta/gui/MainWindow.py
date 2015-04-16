@@ -70,7 +70,7 @@ class MainWindow(QMainWindow):
 		self.ui.statusbar.showMessage("Ready")
 
 	def onSniffTimeout(self):
-		msg = QMessageBox()
+		msg = QMessageBox(self)
 		msg.setText("Capture Done!")
 		msg.setWindowTitle("Sniffer")
 		msg.exec_()

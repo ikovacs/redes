@@ -5,7 +5,7 @@ from scapy.all import *
 
 class Sniffer(QObject):
 
-	packetCaptured = pyqtSignal(scapy.layers.l2.Ether)
+	packetCaptured = pyqtSignal(Packet)
 	finished = pyqtSignal()
 	timeout = pyqtSignal()
 
