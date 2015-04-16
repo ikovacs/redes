@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
 		#
 		self.sniffer = Sniffer()
 		self.sniffer.packetCaptured.connect(self.onPacketCaptured)
+		self.sniffer.timeout.connect(self.onSniffTimeout)
 		self.thread = QThread()
 		self.sniffer.moveToThread(self.thread)
 		self.thread.started.connect(self.sniffer.sniff)
@@ -67,6 +68,12 @@ class MainWindow(QMainWindow):
 		self.ui.actionSaveEntropy.triggered.connect(self.saveEntropy)
 		#
 		self.ui.statusbar.showMessage("Ready")
+
+	def onSniffTimeout(self):
+		msg = QMessageBox()
+		msg.setText("Capture Done!")
+		msg.setWindowTitle("Sniffer")
+		msg.exec_()
 
 	def saveCapture(self):
 		fileName = QFileDialog.getSaveFileName(self, "Save Capture", QDir.homePath(), "Text File (*.txt)")
