@@ -19,6 +19,9 @@ class EtherEntropy(QObject):
 		self.ethPackets = dict()
 		self.ethPacketsCount = 0
 
+	def clean(self):
+		self.ethPackets = dict()
+
 	def addAll(self, packets):
 		self.ethPacketsCount += len(packets)
 		for packet in packets:

@@ -175,6 +175,8 @@ class MainWindow(QMainWindow):
 		self.packets = 0
 		self.ethPackets = list()
 		self.arpPackets = list()
+		self.arpEntropy.clean()
+		self.ethEntropy.clean()
 		self.updateStatics()
 
 	def processEthernetPacket(self, packet):
