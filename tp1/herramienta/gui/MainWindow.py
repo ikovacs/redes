@@ -27,6 +27,9 @@ class MainWindow(QMainWindow):
 		self.arpPackets = list()
 		self.ethPackets = list()
 		#
+		self.arpEntropies = list()
+		self.ethEntropies = list()
+		#
 		self.sniffer = Sniffer()
 		self.sniffer.packetCaptured.connect(self.onPacketCaptured)
 		self.thread = QThread()
@@ -58,10 +61,42 @@ class MainWindow(QMainWindow):
 		self.timer2.timeout.connect(self.updateStatics)
 		self.timer2.start(MILLIS_200)
 		#
+		self.ui.actionSaveCapture.triggered.connect(self.saveCapture)
+		self.ui.actionSaveEntropy.triggered.connect(self.saveEntropy)
 
 	def saveCapture(self):
-		# FORMATO? QUE ONDA?!!!
-		pass
+		fileName = QFileDialog.getSaveFileName(self, "Save Capture", QDir.homePath(), "Text File (*.txt)")
+		fileName = fileName[0]
+		if fileName != "":
+			fle = open(fileName, 'w+')
+			for packet in self.ethPackets:
+				hwsrc = packet[Ether].src
+				hwdst = packet[Ether].dst
+				etype = str(packet[Ether].type)
+				line = '{} {} {} {}\n'.format('eth', hwsrc, hwdst, etype)
+				fle.write(line)
+			for packet in self.arpPackets:
+				psrc = packet[ARP].psrc
+				pdst = packet[ARP].pdst
+				hwsrc = packet[ARP].hwsrc
+				hwdst = packet[ARP].hwdst
+				operation = str(packet[ARP].op)
+				line = '{} {} {} {} {} {}\n'.format('arp',
+					psrc, pdst,
+					hwsrc, hwdst, operation)
+				fle.write(line)
+			fle.close()
+
+
+	def saveEntropy(self):
+		fileName = QFileDialog.getSaveFileName(self, "Save Entropy", QDir.homePath(), "Text File (*.txt)")
+		fileName = fileName[0]
+		if fileName != "":
+			fle = open(fileName, 'w+')
+			for i in range(len(self.ethEntropies)):
+				line = '{} {} {}\n'.format(i, self.ethEntropies[i], self.arpEntropies[i])
+				fle.write(line)
+			fle.close()
 
 	def X(self):
 		# top 10 ip replies, por logica si una ip manda muchas replies es que tiene muchas request por lo que es muy solicitada, un server?
@@ -81,6 +116,7 @@ class MainWindow(QMainWindow):
 				'Max: {:.4f} ({})'.format(
 					self.maxEthEntropy[1],
 					self.maxEthEntropy[0]))
+		self.ethEntropies.append(ans)
 
 	def onArpEntropyReady(self, ans):
 		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ans))
@@ -91,6 +127,7 @@ class MainWindow(QMainWindow):
 				'Max: {:.4f} ({})'.format(
 					self.maxArpEntropy[1],
 					self.maxArpEntropy[0]))
+		self.arpEntropies.append(ans)
 
 	def calcArpEntropy(self):
 		self.arpEntropy.addAll(self.arpPackets)

@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(311, 241)
+        MainWindow.resize(341, 274)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.entropyBox)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 311, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 341, 27))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -82,6 +82,13 @@ class Ui_MainWindow(object):
         self.actionReset.setObjectName("actionReset")
         self.actionInterval = QtWidgets.QAction(MainWindow)
         self.actionInterval.setObjectName("actionInterval")
+        self.actionSaveCapture = QtWidgets.QAction(MainWindow)
+        self.actionSaveCapture.setObjectName("actionSaveCapture")
+        self.actionSaveEntropy = QtWidgets.QAction(MainWindow)
+        self.actionSaveEntropy.setObjectName("actionSaveEntropy")
+        self.menuFile.addAction(self.actionSaveCapture)
+        self.menuFile.addAction(self.actionSaveEntropy)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionQuit)
         self.menuCatuper.addAction(self.actionInterval)
         self.menuCatuper.addAction(self.actionStart)
@@ -116,4 +123,6 @@ class Ui_MainWindow(object):
         self.actionStop.setText(_translate("MainWindow", "Stop"))
         self.actionReset.setText(_translate("MainWindow", "Reset"))
         self.actionInterval.setText(_translate("MainWindow", "Interval"))
+        self.actionSaveCapture.setText(_translate("MainWindow", "Save Capture"))
+        self.actionSaveEntropy.setText(_translate("MainWindow", "Save Entropy"))
 

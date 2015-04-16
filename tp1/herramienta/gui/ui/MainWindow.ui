@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>241</height>
+    <width>341</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,7 +103,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>311</width>
+     <width>341</width>
      <height>27</height>
     </rect>
    </property>
@@ -111,6 +111,9 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionSaveCapture"/>
+    <addaction name="actionSaveEntropy"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuCatuper">
@@ -164,6 +167,16 @@
   <action name="actionInterval">
    <property name="text">
     <string>Interval</string>
+   </property>
+  </action>
+  <action name="actionSaveCapture">
+   <property name="text">
+    <string>Save Capture</string>
+   </property>
+  </action>
+  <action name="actionSaveEntropy">
+   <property name="text">
+    <string>Save Entropy</string>
    </property>
   </action>
  </widget>
