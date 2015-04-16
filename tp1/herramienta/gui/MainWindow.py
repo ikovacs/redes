@@ -57,9 +57,11 @@ class MainWindow(QMainWindow):
 		self.arpEntropy.resultReady.connect(self.arpEntropyThread.quit)
 		#
 		self.timer = QTimer(self)
-		self.timer.timeout.connect(self.updateEntropy)
 		self.timer.timeout.connect(self.onCountDown)
 		self.timer.start(ONE_SECOND)
+		#
+		self.entropyTimer = QTimer(self)
+		self.entropyTimer.timeout.connect(self.updateEntropy)
 		#
 		self.timer2 = QTimer(self)
 		self.timer2.timeout.connect(self.updateStatics)
@@ -188,11 +190,13 @@ class MainWindow(QMainWindow):
 		self.ui.actionStart.setEnabled(False)
 		self.ui.actionStop.setEnabled(True)
 		self.thread.start()
+		self.entropyTimer.start(ONE_SECOND)
 
 	def onCaptureStop(self):
 		self.ui.actionInterval.setEnabled(True)
 		self.ui.actionStart.setEnabled(True)
 		self.ui.actionStop.setEnabled(False)
+		self.entropyTimer.stop()
 		self.sniffer.stop()
 
 	def onResetCapture(self):
