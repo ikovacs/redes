@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
 		#
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.updateEntropy)
+		self.timer.start(ONE_SECOND)
 		#
 		self.timer2 = QTimer(self)
 		self.timer2.timeout.connect(self.updateStatics)
@@ -145,11 +146,8 @@ class MainWindow(QMainWindow):
 
 	def onPacketCaptured(self, packet):
 		self.packets += 1
-		#self.updateStatics()
-
 		if Ether in packet:
 			self.processEthernetPacket(packet)
-		
 		if ARP in packet:
 			self.processArpPacket(packet)
 
@@ -164,14 +162,12 @@ class MainWindow(QMainWindow):
 		self.ui.actionStart.setEnabled(False)
 		self.ui.actionStop.setEnabled(True)
 		self.thread.start()
-		self.timer.start(ONE_SECOND)
 
 	def onCaptureStop(self):
 		self.ui.actionInterval.setEnabled(True)
 		self.ui.actionStart.setEnabled(True)
 		self.ui.actionStop.setEnabled(False)
 		self.sniffer.stop()
-		self.timer.stop()
 
 	def onResetCapture(self):
 		self.packets = 0
