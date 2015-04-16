@@ -26,30 +26,24 @@ class ArpEntropy(QObject):
 
 	def add(self, packet):
 		self.arpPacketsCount += 1
+
 		psrc = packet[ARP].psrc
 		pdst = packet[ARP].pdst
-		request = True if packet[ARP].op == ARP_REQUEST else False
-		if psrc not in self.arpPackets:
-			self.arpPackets[psrc] = dict()
+		hwsrc = packet[ARP].hwsrc
+		hwdst = packet[ARP].hwdst
+		operation = str(packet[ARP].op)
+		key = ''.join([psrc,hwsrc,psrc,hwdst,operation])
 
-		if pdst not in self.arpPackets[psrc]:
-			self.arpPackets[psrc][pdst] = [0, 0]
-		if request:
-			self.arpPackets[psrc][pdst][REQ] += 1
+		if key not in self.arpPackets:
+			self.arpPackets[key] = 1
 		else:
-			self.arpPackets[psrc][pdst][RLY] += 1
+			self.arpPackets[key] += 1
 
 	def entropy(self):
 		entropy = .0
-		for psrc in self.arpPackets:
-			for pdst in self.arpPackets[psrc]:
-				c = self.arpPackets[psrc][pdst][RLY]
-				if c > 0:
-					p = (float(c) / float(self.arpPacketsCount))
-					entropy += p * -(log(p)/log(2))
-				c = self.arpPackets[psrc][pdst][REQ]
-				if c > 0:
-					p = (float(c) / float(self.arpPacketsCount))
-					entropy += p * -(log(p)/log(2))
+		for key in self.arpPackets:
+			s = self.arpPackets[key]
+			p = (float(s) / float(self.arpPacketsCount))
+			entropy += p * -(log(p)/log(2))
 		self.resultReady.emit(entropy)
 		return entropy

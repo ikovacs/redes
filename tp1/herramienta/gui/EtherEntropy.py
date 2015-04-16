@@ -28,24 +28,18 @@ class EtherEntropy(QObject):
 		self.ethPacketsCount += 1
 		hwsrc = packet[Ether].src
 		hwdst = packet[Ether].dst
-		etype = packet[Ether].type 
-		if hwsrc not in self.ethPackets:
-			self.ethPackets[hwsrc] = dict()
-		if hwdst not in self.ethPackets[hwsrc]:
-			self.ethPackets[hwsrc][hwdst] = dict()
-		if etype not in self.ethPackets[hwsrc][hwdst]:
-			self.ethPackets[hwsrc][hwdst][etype] = 1
+		etype = str(packet[Ether].type)
+		key = ''.join([hwsrc,hwdst,etype])
+		if key not in self.ethPackets:
+			self.ethPackets[key] = 1
 		else:
-			self.ethPackets[hwsrc][hwdst][etype] += 1
+			self.ethPackets[key] += 1
 
 	def entropy(self):
 		entropy = .0
-		if self.ethPacketsCount > 0:
-			for hwsrc in self.ethPackets:
-				for hwdst in self.ethPackets[hwsrc]:
-					for etype in self.ethPackets[hwsrc][hwdst]:
-						c = self.ethPackets[hwsrc][hwdst][etype]
-						p = (float(c) / float(self.ethPacketsCount))
-						entropy += p * -(log(p)/log(2))
+		for key in self.ethPackets:
+			s = self.ethPackets[key]
+			p = (float(s) / float(self.ethPacketsCount))
+			entropy += p * -(log(p)/log(2))
 		self.resultReady.emit(entropy)
 		return entropy

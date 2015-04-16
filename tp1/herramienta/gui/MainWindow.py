@@ -65,6 +65,8 @@ class MainWindow(QMainWindow):
 		#
 		self.ui.actionSaveCapture.triggered.connect(self.saveCapture)
 		self.ui.actionSaveEntropy.triggered.connect(self.saveEntropy)
+		#
+		self.ui.statusbar.showMessage("Ready")
 
 	def saveCapture(self):
 		fileName = QFileDialog.getSaveFileName(self, "Save Capture", QDir.homePath(), "Text File (*.txt)")
