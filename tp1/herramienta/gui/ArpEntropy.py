@@ -35,7 +35,7 @@ class ArpEntropy(QObject):
 		hwsrc = packet[ARP].hwsrc
 		hwdst = packet[ARP].hwdst
 		operation = str(packet[ARP].op)
-		key = ''.join([psrc,hwsrc,psrc,hwdst,operation])
+		key = ''.join([psrc,hwsrc,pdst,hwdst,operation])
 
 		if key not in self.arpPackets:
 			self.arpPackets[key] = 1

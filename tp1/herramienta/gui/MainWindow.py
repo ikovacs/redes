@@ -123,7 +123,7 @@ class MainWindow(QMainWindow):
 		self.ethEntropies.append(ans)
 
 	def onArpEntropyReady(self, ans):
-		self.ui.arpEntropyLabel.setText('ARP: {}'.format(ans))
+		self.ui.arpEntropyLabel.setText('ARP: {:.4f}'.format(ans))
 		if self.maxArpEntropy[1] < ans:
 			now = datetime.strftime(datetime.now(), '%H:%M:%S')
 			self.maxArpEntropy = [ now, ans ]
