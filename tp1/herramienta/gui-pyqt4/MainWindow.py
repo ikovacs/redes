@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
 
 	def saveCapture(self):
 		fileName = QFileDialog.getSaveFileName(self, "Save Capture", QDir.homePath(), "Text File (*.txt)")
-		fileName = fileName[0]
+		#fileName = fileName[0]
 		if fileName != "":
 			fle = open(fileName, 'w+')
 			for packet in self.ethPackets:
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
 
 	def saveEntropy(self):
 		fileName = QFileDialog.getSaveFileName(self, "Save Entropy", QDir.homePath(), "Text File (*.txt)")
-		fileName = fileName[0]
+		#fileName = fileName[0]
 		if fileName != "":
 			fle = open(fileName, 'w+')
 			min = len(self.ethEntropies) if len(self.ethEntropies) < len(self.arpEntropies) else len(self.ethEntropies)
