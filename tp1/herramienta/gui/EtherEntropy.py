@@ -33,7 +33,8 @@ class EtherEntropy(QObject):
 		hwsrc = packet[Ether].src
 		hwdst = packet[Ether].dst
 		etype = str(packet[Ether].type)
-		key = ''.join([hwsrc,hwdst,etype])
+		#key = ''.join([hwsrc,hwdst,etype]) # Dijeron que asi no era... solo importa el type.
+		key = etype
 		if key not in self.ethPackets:
 			self.ethPackets[key] = 1
 		else:
