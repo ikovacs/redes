@@ -15,9 +15,10 @@ Al primer modelo lo llamaremos " Modelo Ethernet " y al segundo " Modelo ARP ".
 
 
 \subsection{Modelo ARP}
-Un modelo de fuente de información que se decidió plantear, consiste en tomar como evento al suceso " la IP src envía un paquete a la IP dst con un pedido de Request o Replay ". Por consiguiente, se toma como fuente los dispositivos que mandan paquetes diferenciadolos por el tipo de mensaje que envían.
+Un modelo de fuente de información que se decidió plantear, consiste en tomar como evento al suceso "el host fuente con ciertas direcciones IP y MAC envía un paquete al host destino con otras direcciones IP y MAC con un pedido de Request o Replay ". Por consiguiente, se toma como fuente los dispositivos que mandan paquetes diferenciadolos por el tipo de mensaje que envían.
 
-Luego, para el cálculo de la entropía se almacena un diccionario que contiene a todas las direcciones IP src como clave, y los valores son a su vez diccionarios que contienen como clave a la dirección IP dst y como valor se almacena la cantidad de envíos de tipo Request y Replay. Por lo que, al llegar un nuevo evento, se incrementa en uno la cantidad de apariciones del mismo, o en caso de ser la primera vez de su ocurrencia, entonces se lo agrega al diccionario, iniciandolo en uno.
+
+Luego, para el cálculo de la entropía se almacena un diccionario que contiene como claves a los cinco que contienen los paquetes ARP. Por lo que, al llegar un nuevo evento, se incrementa en uno la cantidad de apariciones del mismo, o en caso de ser la primera vez de su ocurrencia, entonces se lo agrega al diccionario, iniciandolo en uno.
 
 La probabilidad de que ocurra un evento en este modelo implica una relación entre la cantidad de paquetes capturados hasta ese momento por un símbolo determinado contra la cantidad total de paquetes ARP obtenidos hasta el momento. 
 La cantidad de información contenida en un evento determinado se obtiene a partir del siguiente cálculo: 
@@ -34,7 +35,7 @@ Se utiliza el logaritmo en base dos, ya que la información se representa median
 
 \subsection{Modelo Ethernet}
 El modelo de fuente de información planteado por la cátedra implica distinguir a los paquetes por lo que indiquen en el campo type. Se distinguirán de esta manera a los nodos por el tipo sin importar quien es el host emisor y quien es el receptor. 
-Entonces, para el cálculo de la entropía se define un diccionario que.
 
+Entonces, para el cálculo de la probabilidad de la aparición de cada símbolo de la fuente se almacena, para cada type, la cantidad de ocurrencias del mismo.
 
-
+Luego, se aplica el mismo procedimiento que en el modelo anterior para el cálculo de la entropía.
