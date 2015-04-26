@@ -21,10 +21,9 @@ for line in sys.stdin:
 	
 for key, value in temp.items():
 	values = key.split('-')
-	if value > 20:
-		if values[2] == REPLY:
-			grafo.write('\"' + values[0] + '\"' + ' -> ' + '\"' + values[1] + '\"' + '[label=\"' + str(value) + ' REQ \"];\n')
-		else:
-			grafo.write('\"' + values[0] + '\"' + ' -> ' + '\"' + values[1] + '\"' + '[label=\"' + str(value) + ' REPLY \"];\n')
+	if values[2] == REPLY:
+		grafo.write('\"' + values[0] + '\"' + ' -> ' + '\"' + values[1] + '\"' + '[label=\"' + str(value) + ' REQ \"];\n')
+	else:
+		grafo.write('\"' + values[0] + '\"' + ' -> ' + '\"' + values[1] + '\"' + '[label=\"' + str(value) + ' REPLY \"];\n')
 grafo.write('}\n')
 grafo.close()
