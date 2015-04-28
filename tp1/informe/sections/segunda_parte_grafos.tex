@@ -2,7 +2,7 @@
 Para probar la herramienta desarrollada en la primera parte, se analizaron cuatro redes diferentes a partir de las dos fuentes de información, el Modelo Ethernet y el Modelo ARP. 
 A continuación se presentan las cuatro LANs analizadas y sus correspondientes resultados. 
 
-\subsection{Digrafos de las redes}
+\subsection{Digrafos de las redes}\label{"Grafos"}
 
 \subsubsection{Red Hogareña}
 Como lo indica su nombre, la misma fue tomada en la casa de uno de los integrantes del grupo. Utilizandose la red Wifi se realizaron capturas de los paquetes Ethernet y, además, de los ARP, de acuerdo al modelo correspondiente. La red presentaba pocos dispositivos conectados y enviando y recibiendo información, por lo que permite un mejor análisis del comportamiento de la misma. 
@@ -31,19 +31,17 @@ Debajo, se puede observar el digrafo obtenido. El mismo fue originado a partir d
 
 \centerline{\includegraphics[angle=90, scale=0.3]{./graficos/grafos-arp/grafo_laburo_mari.png}}
 
-Observando el grafo presentado, se puede notar que el nodo 192.168.1.1 es distinguido, por la cantidad de mensajes de tipo Replay que salen de mismo. Probablemente, la ip del nodo corresponda al router de la red. Esta  deducción, se podrá comprobar en el análisis de siguientes gráficos.
+Observando el grafo presentado, se puede notar que el nodo 192.168.1.1 es distinguido, por la cantidad de mensajes de tipo Replay que salen de mismo. Probablemente, la IP del nodo corresponda al router de la red. Esta  deducción, se podrá comprobar en el análisis de siguientes gráficos.
 
 \subsubsection{Red Mercap}
 Finalmente, la cuarta captura se realizó en el trabajo de otro de los integrantes. La red fue analizada desde una máquina virtual corriendo un sistema Linux, sobre un host Windows. Cabe aclarar que la misma estaba conectada a la red de manera física y que cuenta de 30 computadoras, 5 servidores y 1 router WiFi (además de los posibles dispositivos móviles conectados a la red de manera inalámbrica).
 
 La captura duró una hora, durante la cual se obtuvo una enorme cantidad de relaciones generadas entre los diferentes actores, enviando y recibiendo los respectivos paquetes ARP. Esto ya aseguraba que el digrafo resultante (en primer instancia) iba a ser ilegible, aún ampliando la imagen (como observamos en el círculo con zoom sobre uno de los tantos nodos distinguidos de la red). 
 
-\newline
 \centerline{\includegraphics[angle=0,scale=0.3]{./graficos/grafos-arp/grafo_laburo_eze1.png}}
 
 Es por eso que para analizar mejor la red y la interacción por medio de paquetes, decidimos mostrar solo aquellas relaciones en las cuales se envíen o reciban mas de 20 paquetes ARP. Este filtro solo se aplica para favorecer la visualización de los datos y de ninguna manera alteramos los resultados de la captura para los experimentos posteriores. De esta manera, observamos que la presente red toma un tamaño mucho mas manejable. Limitando la cantidad de nodos a mostrar, nos podemos concentrar en ver los nodos que realmente se destacan.
 
 A simple vista observamos que los nodos 192.168.168.1, 192.168.168.2, 192.168.168.4, 192.168.168.36 y 192.168.168.135 concentran gran parte del intercambio de mensajes ARP de este segmento de la captura. De estos nodos distinguidos, en particular podemos inferir que los que tienen IPs mas bajas, probablemente sean algunos de los servidores de los que dispone la empresa. Potencialmente, los mas antiguos y utilizados, a saber; un servidor para Envy (control de versiones orientado a objetos - Smalltalk), un servidor que aloja la web empresarial, un CVS y otras herramientas como JIRA ó BambooHR (muy consultados a toda hora), y finalmente un servidor corriendo GemStone (base de datos no relacional).
 
-\newline
-\centerline{\includegraphics[angle=0,scale=0.3]{./graficos/grafos-arp/grafo_laburo_eze2.png}}
+\centerline{\includegraphics[angle=90,scale=0.2]{./graficos/grafos-arp/grafo_laburo_eze2.png}}

@@ -5,7 +5,7 @@
 En primer lugar se implementó una herramienta que permita escuchar de forma pasiva a la red local. De esta manera, se podrá obtener a los paquetes ARP y Ethernet que se encuentran en la red. 
 
 La herramienta está desarrollada utilizando el lenguaje Python y la herramienta Scapy. Para poder trabajar de una manera más cómoda, también se desarrolló un enterno gráfico que permite visualizar las tomas de paquetes que se estan realizando. También se permite realizar campturas durante un tiempo determinado y almacenarlas luego.  
-De los paquetes ARP que se obtienen de la red, se almacenan las direcciones IP y las MAC tanto del recepto como del emisor del mismo. Además, se distingue de los paquetes que envían un Request, de los que envían Replay. En el caso de los paquetes de tipo Ethernet, se almacenan las direcciones MAC tanto del emisor como del receptor y, además, el campo type.
+De los paquetes ARP que se obtienen de la red, se almacenan las direcciones IP tanto del receptor como del emisor del mismo. Además, se distingue de los paquetes que envían un Request, de los que envían Replay. En el caso de los paquetes de tipo Ethernet, se almacenan las direcciones MAC tanto del emisor como del receptor y, además, el campo type.
 
 A su vez, mientras se realizan las capturas de los paquetes que se encuentren en determinada red, se realizarán los cálculos necesarios para poder obtener la entropía, de acuerdo a la fuente de información definido. De esta manera, procedemos a describir las dos fuentes de información en las cuales se utilizarán de base para el analisis del comportamiento de los nodos en la red. 
 El primer modelo de fuente de información está dado por la cátedra y se define que la misma distingue a los protocolos que se encapsulan en todos los paquetes ethernet de una red específica. Cada símbolo se diferenciará del otro a partir del valor del campo type del frame de capa 2.
@@ -15,10 +15,10 @@ Al primer modelo lo llamaremos " Modelo Ethernet " y al segundo " Modelo ARP ".
 
 
 \subsection{Modelo ARP}
-Un modelo de fuente de información que se decidió plantear, consiste en tomar como evento al suceso "el host fuente con ciertas direcciones IP y MAC envía un paquete al host destino con otras direcciones IP y MAC con un pedido de Request o Replay ". Por consiguiente, se toma como fuente los dispositivos que mandan paquetes diferenciadolos por el tipo de mensaje que envían.
+Un modelo de fuente de información que se decidió plantear, consiste en tomar como evento al suceso "el host fuente con ciertas direcciones IP envía un paquete al host destino con otras direcciones IP con un pedido de Request o Replay ". Por consiguiente, se toma como fuente los dispositivos que mandan paquetes diferenciadolos por el tipo de mensaje que envían.
 
 
-Luego, para el cálculo de la entropía se almacena un diccionario que contiene como claves a los cinco que contienen los paquetes ARP. Por lo que, al llegar un nuevo evento, se incrementa en uno la cantidad de apariciones del mismo, o en caso de ser la primera vez de su ocurrencia, entonces se lo agrega al diccionario, iniciandolo en uno.
+Luego, para el cálculo de la entropía se almacena un diccionario que contiene como claves a los cinco que contienen los paquetes ARP. Por lo que, al llegar un nuevo evento, se incrementa en uno la cantidad de apariciones del mismo, o en caso de ser la primera vez de su ocurrencia, entonces se lo agrega al diccionario, iniciándolo en uno.
 
 La probabilidad de que ocurra un evento en este modelo implica una relación entre la cantidad de paquetes capturados hasta ese momento por un símbolo determinado contra la cantidad total de paquetes ARP obtenidos hasta el momento. 
 La cantidad de información contenida en un evento determinado se obtiene a partir del siguiente cálculo: 
