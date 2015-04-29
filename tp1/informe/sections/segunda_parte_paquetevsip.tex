@@ -1,63 +1,55 @@
-\section{Gráficos y análisis}
-Para probar la herramienta desarrollada en la primera parte, se analizaron cuatro redes diferentes a partir de las dos fuentes de información, el Modelo Ethernet y el Modelo ARP. 
-A continuación se presentan las cuatro LANs analizadas y sus correspondientes resultados. 
+\subsection{Cantidad de paquetes por direcciones IP}
 
-\subsection{Digrafos de las redes}\label{"Grafos"}
+Teniendo las cuatro capturas diferentes sobre redes de diversa índole y, habiendo calculado los respectivos valores de información y entropía (para ambos modelos mencionados previamente, a saber, Modelo Ethernet y Modelo ARP), nos proponemos dar un paso más y analizar dichos resultados desde varias perspectivas.
+
+En principio, analizaremos cómo la información de cada símbolo de nuestra fuente $S_1$ varía según la cantidad de paquetes ARP (Reply o Request) capturados para cada dirección IP. Para ello recordemos que la fórmula de la cantidad de información de un símbolo $s_i \in S_1$ vendrá dada por:
+
+\begin{equation}
+ I(s_{i}) = -log_{2}(P(s_{i}))\ bits
+\end{equation}
+
+De esta manera, mientras mas elevada sea la probabilidad de ocurrencia del símbolo iésimo, más baja será la información que finalmente nos brindará. De esto podemos inducir que aquellos símbolos cuya información es mucho más baja que la del resto, implica que tuvieron niveles de recurrencia mucho mas altos. Por lo tanto, las direcciones IP que representan habrán concentrado mucho más tráfico de paquetes ARP que las demás.
+
+Ahora bien ¿Cuánto es poca información? ¿Cuánto es mucho tráfico? Para aclarar dichas dudas debemos utilizar un concepto extra: la entropía, es decir el valor de incertidumbre de la fuente. La fórmula de dicho concepto es:
+
+\begin{equation}
+ H(S) = \sum_{s \in S} P(s) I(s)
+\end{equation}
+
+Así es como podemos vincular y comparar entre sí a cada uno de los valores de información para todo símbolo en la fuente analizada. Para aquellos símbolos cuyos valores de información superen el nivel de entropía, descubriremos que la cantidad de paquetes ARP relacionados consigo, no superan el promedio. Por el contrario, los símbolos por debajo del nivel de entropía poseen grandes concentraciones de paquetes ARP en su tráfico habitual.
 
 \subsubsection{Red Hogareña}
-Como lo indica su nombre, la misma fue tomada en la casa de uno de los integrantes del grupo. Utilizandose la red Wifi se realizaron capturas de los paquetes Ethernet y, además, de los ARP, de acuerdo al modelo correspondiente. La red presentaba pocos dispositivos conectados y enviando y recibiendo información, por lo que permite un mejor análisis del comportamiento de la misma. 
 
-A continuación se presenta un digrafo que muestra el comportamiento de la red para el Modelo ARP. Se presentan en los nodos a los dispositivos con su correspondiente dirección IP y las aristas corresponden a la cantidad de paquetes de tipo Replay o Request que ocurren entre dos host. 
+En la sección anterior, dimos un primer acercamiento a los datos obtenidos en las capturas, mostrando una serie de grafos dirigidos donde los nodos eran las direcciones IPs y los ejes (con peso) eran las cantidades de paquetes ARP que habían transitado entre dos nodos. En dichos gráficos se pudieron ver ciertos nodos que resaltaban del resto por la gran cantidad de paquetes ARP que concentraban. Entonces, por medio del cálculo de la información para cada símbolo, tendremos mas elementos para respaldar nuestras ideas.
 
-\begin{figure}{h!}{0.5\textwidth}
-  \begin{center}
-    \includegraphics[width=1\textwidth]{./graficos/grafos-arp/grafo_casa_mari.png}
-  \end{center}
-  \caption{Digrafo: red hogareña}
-\end{figure}
+\centerline{\includegraphics[width=0.9\textwidth]{./graficos/paquetesVSIP/casa_mari.png}}
 
-Como se puede observar, el host con dirección IP 192.168.0.1 se podría inferir que es el router, ya que es el capaz de responder con un mensaje de tipo Replay a todos los mensajes de tipo Request enviados. Luego, en secciones siguientes se podrá distinguir de manera clara cual representaría al nodo distinguido para el evento del Modelo ARP. 
+En el histograma de Información vemos fácilmente como el valor más bajo es alcanzado por el símbolo correspondiente para la IP 192.168.0.1, que precisamente en el digrafo aparecía como el mas concurrido. Decimos entonces que efectivamente, a dicho símbolo le pertenece la IP mas recurrente en la captura actual, por lo tanto es un nodo distinguido.
 
 \subsubsection{Red Laboratorio}
-En este caso se decidió capturar los paquetes que se encontraban en la red cableada de uno de los laboratorios de la facultad. La cantidad de host que se encuentran interviniendo en la misma es mucho mayor a la de una red hogareña. Se muestra, a continuación, el digrafo generado a partir del evento ``una dirección IP participa en el envío de un paquete de tipo Replay o Request a otra dirección IP''. 
 
-Debido al gran número de dispositivos que se involucran en la red, se decidió eliminar aquellos que únicamente participan en el recibimiento o envío de un solo paquete de tipo ARP. Ese filtro se aplica únicamente para la presentación del digrafo del evento ``una dirección IP participa en el envío de un paquete de tipo Replay o Request a otra dirección IP''.
+En este caso, el histograma en principio no nos revela datos contundentes porque el número de hosts en la red es muy grande (supera ampliamente el caso anterior).
 
-\begin{figure}{h!}{0.5\textwidth}
-  \begin{center}
-    \includegraphics[angle=90, scale=0.3]{./graficos/grafos-arp/grafo_labo5.png}
-  \end{center}
-  \caption{Digrafo: red laboratorio}
-\end{figure}
+\centerline{\includegraphics[width=1\textwidth]{./graficos/paquetesVSIP/labo5_muchos.png}}
 
-A partir del digrafo, se podría concluir que el nodo 10.2.203.254 es un nodo característico debido a la cantidad de información que posee. Luego, mediante otro tipo de análisis, se podrá definir de manera más clara, cual es el nodo característico correspondiente a esa fuente de información para la Red del Laboratorio. 
+Es por ello que decidimos filtrar los resultados y mostrar solamente los cincuenta valores de información mas bajos obtenidos por la captura. Esto es así para poder observar con mayor comodidad aquellas direcciones IP que realmente son relevantes para el experimento. Vemos que en particular, todos los valores filtrados quedaron por debajo de la línea de entropía, convirtiendolos en los nodos mas recurrentes de la red.
 
+\centerline{\includegraphics[width=1\textwidth]{./graficos/paquetesVSIP/labo5.png}}
+
+También vemos claramente en el histograma, que la IP 10.2.203.254 le pertenece al nodo más distinguido. Efectivamente es el mismo nodo que en el digrafo correspondiente habíamos resaltado. Si recordamos la particular disposición del nodo en cuestión en el grafo y hacemos hincapié en la gran diferencia entre la cantidad de información del mismo y los otros símbolos, concluímos que dicha dirección pertenece al \textit{switch} del laboratorio, nodo distinguido por excelencia.
 
 \subsubsection{Red Devartis}
-Otra de las capturas se realizó en el trabajo de uno de los integrantes. Los paquetes se capturaron en la red cableada del lugar. Esta red cuenta con aproximadamente 16 host, 1 router y 1 servidor. Es decir, la red presenta un tamaño intermedio con respecto a las dos anteriores. Por lo que es más compleja de analizar que la red hogareña, pero mucho más simple que la red del laboratorio de la facultad. 
-Debajo, se puede observar el digrafo obtenido. El mismo fue originado a partir del mismo evento que los anteriores. 
 
-\begin{figure}{h!}{0.5\textwidth}
-  \begin{center}
-    \includegraphics[angle=90, scale=0.3]{./graficos/grafos-arp/grafo_laburo_mari.png}
-  \end{center}
-  \caption{Digrafo: red laboral Devartis}
-\end{figure}
+Para esta red no fue necesario realizar ningún tipo de filtrado. Se pueden ver muy fácilmente los valores de información calculados para los diferentes símbolos. Es así como se puede reafirmar la idea que se había planteado en la sección previa: el nodo 192.168.1.1 es el mas distinguido, seguido inmediatamente (pero con bastante diferencia) por el nodo 192.168.1.211.
 
-Observando el grafo presentado, se puede notar que el nodo 192.168.1.1 es distinguido, por la cantidad de mensajes de tipo Replay que salen de mismo. Probablemente, la IP del nodo corresponda al router de la red. Esta  deducción, se podrá comprobar en el análisis de siguientes gráficos.
+\centerline{\includegraphics[width=1\textwidth]{./graficos/paquetesVSIP/laburo_mari.png}}
+
+Como se puede apreciar, esos dos símbolos son los únicos que quedaron por debajo de la entropía. Esto refuerza la idea que la cantidad de paquetes ARP que transitaron por ambos nodos es mucho mas grande que la del resto y que hay una gran diferencia de concentración de paquetes entre los dos grupos. Ambos son nodos distinguidos. De no ser así (es decir, si la diferencia y el tránsito no fueran tan grandes), las probabilidades de ocurrencia serían mas similares, al igual que los valores de información. Por lo tanto la entropía sería mucho mas elevada.
 
 \subsubsection{Red Mercap}
-Finalmente, la cuarta captura se realizó en el trabajo de otro de los integrantes. La red fue analizada desde una máquina virtual corriendo un sistema Linux, sobre un host Windows. Cabe aclarar que la misma estaba conectada a la red de manera física y que cuenta de 30 computadoras, 5 servidores y 1 router WiFi (además de los posibles dispositivos móviles conectados a la red de manera inalámbrica).
 
-La captura duró una hora, durante la cual se obtuvo una enorme cantidad de relaciones generadas entre los diferentes actores, enviando y recibiendo los respectivos paquetes ARP. Esto ya aseguraba que el digrafo resultante (en primer instancia) iba a ser ilegible, aún ampliando la imagen (como observamos en el círculo con zoom sobre uno de los tantos nodos distinguidos de la red). 
+Finalmente, en esta red donde habíamos obtenido mucha información en la sección anterior, podemos corroborar y reforzar ciertas ideas que habíamos planteado.
 
-Es por eso que para analizar mejor la red y la interacción por medio de paquetes, decidimos mostrar solo aquellas relaciones en las cuales se envíen o reciban mas de 20 paquetes ARP. Este filtro solo se aplica para favorecer la visualización de los datos y de ninguna manera alteramos los resultados de la captura para los experimentos posteriores. De esta manera, observamos que la presente red toma un tamaño mucho mas manejable. Limitando la cantidad de nodos a mostrar, nos podemos concentrar en ver los nodos que realmente se destacan.
+\centerline{\includegraphics[width=1\textwidth]{./graficos/paquetesVSIP/laburo_eze.png}}
 
-A simple vista observamos que los nodos 192.168.168.1, 192.168.168.2, 192.168.168.4, 192.168.168.36 y 192.168.168.135 concentran gran parte del intercambio de mensajes ARP de este segmento de la captura. De estos nodos distinguidos, en particular podemos inferir que los que tienen IPs mas bajas, probablemente sean algunos de los servidores de los que dispone la empresa. Potencialmente, los mas antiguos y utilizados, a saber; un servidor para Envy (control de versiones orientado a objetos - Smalltalk), un servidor que aloja la web empresarial, un CVS y otras herramientas como JIRA ó BambooHR (muy consultados a toda hora), y finalmente un servidor corriendo GemStone (base de datos no relacional).
-
-\begin{figure}{h!}{0.5\textwidth}
-  \begin{center}
-    \includegraphics[angle=90,scale=0.2]{./graficos/grafos-arp/grafo_laburo_eze1.png}
-  \end{center}
-  \caption{Digrafo: red laboral Mercap}
-\end{figure}
+Como podemos ver, todos los nodos que suponíamos eran los distinguidos, aparecen en los primeros lugares del histograma, con los valores de información mas bajos de la captura. Efectivamente, todo apunta que dichos hosts son en realidad los servidores de la empresa. Estos nodos mencionados tienen demasiada presencia en la red, y son recurrentes a la hora recibir o enviar paquetes ARP. Todos indícios de que efectivamente las IPs representan los servidores.
