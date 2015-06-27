@@ -22,9 +22,9 @@ def print_transatlantics(file, trans):
         f.closed
 
 def rtt_between_hops(times):
-    diffs = []
-    for i in range(1,len(times)):
-        diffs.append(times[i+1]-times[i])
+    diffs = [times[0]]
+    for i in range(1, len(times)):
+        diffs.append(times[i]-times[i-1])
     return diffs
 
 def standard_deviation(diffs,avg):
@@ -33,11 +33,11 @@ def standard_deviation(diffs,avg):
         acum += pow(diffs[i]-avg,2)
     return sqrt(acum/len(diffs)-1)
 
-def standard_value(diffs, proms, sd):
+def standard_value(diffs, avg, sd):
     zrtt = []
     for i in range(0,len(diffs)):
-        zrtt.append((diffs[i] - proms[i]) / sd[i])
-    return zrtt
+        zrtt.append((diffs[i] - avg) / sd[i])
+    return ZRTT
 
 def get_transatlantics(R,sd,hops,diffs,m=2):
 
@@ -51,47 +51,45 @@ def get_transatlantics(R,sd,hops,diffs,m=2):
     return transatlantics
 
 def main():
+    host = input('Ingrese nombre del host: ')
 
-    hosts = {"www.cuhk.edu.hk":"china.txt"} #"www.ubc.ca":"canada.txt","www.msu.ru":"rusia.txt",
+    arch = 'traceroute_files/%s.txt' % host
+    print "Comienzo de traceroute a: " + host
+    print "Hora: " + str(time.time())
+    print "Se guarda en: " + arch
 
-    for host in hosts.keys():
-        arch=hosts[host]
-        print "Comienzo de traceroute a: "+host
-        print "Hora: " + str(time.time())
-        print "Se guarda en: " + arch
+    traceroute = MyTraceRoute()
 
-        t = MyTraceRoute()
+    #hops, times = traceroute.normal_traceroute(host=host)
 
-        hops, times = t.normal_traceroute(host=host)
-        print_hops(arch, hops, times)
-
-        #Calculo tiempos entre hops
-        diffs = rtt_between_hops(times)
-        print(diffs)
-
-        #Calculo RTT (promedio)
-        proms = reduce(lambda x, y: x + y, diffs) / len(diffs)
-        print(proms)
+    hops, times = traceroute.full_traceroute(host=host)
+    #print_hops(arch, hops, times)
         
-        #Calculo SRTT 
-        sd = standard_deviation(diffs,R)
-        print(sd)
+    avg_host = [sum(times[ttl])/len(times[ttl]) for ttl in range(1, len(times.keys()) + 1)]
 
-        #Calculo ZRTT
-        zrtt = standard_value(diffs,proms,sd)
-        print(zrtt)
+    #Calculo tiempos entre hops
+    diffs = rtt_between_hops(avg_host)
+    print(diffs)
 
+    #Calculo RTT (promedio)
+    avg = reduce(lambda x, y: x + y, diffs) / len(diffs)
+    print(avg)
+    
+    #Calculo SRTT 
+    sd = standard_deviation(diffs, avg)
+    print(sd)
 
-        #Definiendo el RTT a partir de varios paquetes. 
-        hopsf, timesf, mins, maxs = t.full_traceroute(host=host, packages=3)
+    #Calculo ZRTT
+    zrtt = standard_value(diffs,avg,sd)
+    print(zrtt)
 
-        #transatlantics = get_transatlantics(R,sd,hops,diffs)
+    #transatlantics = get_transatlantics(avg,sd,hops,diffs)
 
-        #get_path() solo anda si antes ejecutaste normal_traceroute()
-        #print t.get_path()
+    #traceroute.get_path()
+    #print traceroute.get_path()
 
-        #print_hops(arch, hops, times, transatlantics, mins, maxs)
-        print "Terminado traceroute a: "+host
+    #print_hops(arch, hops, times, transatlantics, mins, maxs)
+    print "Terminado traceroute a: " + host
 
 if __name__ == "__main__":
     main()

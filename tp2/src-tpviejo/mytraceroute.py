@@ -28,7 +28,7 @@ class MyTraceRoute:
         self.times = {}
         ttl = 1
         no_termino = True
-        while no_termino:
+        while no_termino and ttl <= 255:
 
             self.times[ttl] = []
             for i in range(1, packages):
@@ -57,7 +57,7 @@ class MyTraceRoute:
 
             ttl += 1
 
-        return (self.hops, self.times, self.min_times, self.max_times)
+        return (self.hops, self.times)
 
     def normal_traceroute(self, host, timeout=2):
         hops = {}
@@ -82,9 +82,6 @@ class MyTraceRoute:
             ttl += 1
 
         return (self.hops, self.times)
-
-    def scapy_traceroute(self, host):
-        return traceroute([host], maxttl=20, retry=-2)
 
     # para las direcciones privadas o mal formadas devuelve (None, None).
     def get_location(self, ip):
