@@ -9,7 +9,6 @@ loss_packets = 0
 def ping_echo_request_to(host, ttl=255, timeout=1):
     cur_time = time.time()
     resp = sr(IP(dst=host, ttl=ttl) / ICMP(), timeout=timeout)
-    # print type(resp)
     if len(resp) <= 0:
         loss_packets += 1
     else:
@@ -45,7 +44,7 @@ def estimatedRTT_for_alfa(alfa, file_name):
 
 def main():
     host = input('Ingrese nombre del host: ')
-    cant_pings = 5
+    cant_pings = 80
     pingIterator(cant_pings, host)
 
     for i in range(len(rtts) / 5, len(rtts), len(rtts) / 5):

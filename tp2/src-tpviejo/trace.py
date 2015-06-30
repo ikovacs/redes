@@ -41,38 +41,38 @@ def main():
     host = input('Ingrese nombre del host: ')
 
     arch = 'traceroute_files/%s.txt' % host
+
     print "Comienzo de traceroute a: " + host
     print "Hora: " + str(time.time())
     print "Se guarda en: " + arch
 
     traceroute = MyTraceRoute()
 
-    # hops, times = traceroute.normal_traceroute(host=host)
-
     hops, times = traceroute.full_traceroute(host=host)
-    # print_hops(arch, hops, times)
-    print 'hops: %s' % hops
-    print 'times: %s' % times
+    #print 'hops: %s' % hops
+    #print 'times: %s' % times
+
+    # Calculo promedio de RTT entre todos los host
     avg_host = [sum(times[ttl]) / len(times[ttl]) for ttl in range(1, len(times.keys()) + 1)]
 
     # Calculo tiempos entre hops
     diffs = rtt_between_hops(avg_host)
-    print(diffs)
+    #print(diffs)
 
     # Calculo RTT (promedio)
     avg = sum(diffs) / len(diffs)
-    print(avg)
+    #print(avg)
 
     # Calculo SRTT
     sd = standard_deviation(diffs, avg)
-    print(sd)
+    #print(sd)
 
     # Calculo ZRTT
     zrtt = standard_value(diffs, avg, sd)
-    print(zrtt)
+    #print(zrtt)
 
-    traceroute.get_path()
-    print traceroute.get_path()
+    #traceroute.get_path()
+    #print traceroute.get_path()
 
     print_hops(arch, hops, avg_host, zrtt, diffs)
     print "Terminado traceroute a: " + host

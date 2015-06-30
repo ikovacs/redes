@@ -21,36 +21,26 @@ class MyTraceRoute:
         resp += (rtt, )
         return resp
 
-    def full_traceroute(self, host, timeout=1, packages=4):
+    def full_traceroute(self, host, timeout=1, packages=10):
         self.hops = {}
         self.times = {}
         ttl = 1
         no_termino = True
-        # no_hubo_respuesta = 0
-        # REVISAR TEMA TLLs
         while no_termino and ttl <= 255:
-        # while no_termino and ttl <= 15:
-
+        
             self.times[ttl] = []
             for i in range(1, packages):
                 ans, unans, rtt = self.request(host, ttl, timeout)
 
-                print 'ttl: %s' % ttl
+                if len(ans.res) > 0: 
+                    hop_ip = ans.res[0][1].src #storing the src ip from ICMP error message
 
-                if len(ans.res) > 0:  # hubo respuesta
-                    hop_ip = ans.res[0][1].src # storing the src ip from ICMP error message
-
-                    print 'ans: %s' % ans.res[0][1].type
-
-                    if ans.res[0][1].type != 11: # checking for  ICMP echo-reply
+                    if ans.res[0][1].type != 11: #checking for  ICMP echo-reply
                         no_termino = False
 
                 else:   # no contesto nadie
                     hop_ip = "?"
-                    rtt = rtt_of_unknown    # SI NADIE CONTESTA QUE TIEMPO LE PONEMOS??
-                    # no_hubo_respuesta += 1
-                    # if no_hubo_respuesta >= 10:
-                    #     no_termino = False
+                    rtt = rtt_of_unknown
 
                 if not self.hops.has_key(ttl): self.hops[ttl] = []
                 if not hop_ip in self.hops[ttl]: self.hops[ttl].append(hop_ip)
@@ -60,9 +50,9 @@ class MyTraceRoute:
 
         return (self.hops, self.times)
 
-    # para las direcciones privadas o mal formadas devuelve (None, None).
+    # para las direcciones privadas o mal formadas devuelve (None, None). NO FUNCA..
     def get_location(self, ip):
-        jresp = urllib.urlopen("http://api.hostip.info/get_json.php?ip=%s&position=true" % ip).read()
+        jresp = urllib.urlopen("http://api.hostip.info/get_json.php?ip=190.190.247.1&position=true" % ip).read()
         response = json.loads(jresp.encode("ascii", "ignore"))
         return (response['lat'], response['lng'])
 
