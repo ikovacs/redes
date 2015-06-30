@@ -1,0 +1,68 @@
+\section{Caracterizando rutas}
+
+\subsection{Estimación del RTT}
+A partir de la tool implementada que permite realizar un \textbf{traceroute}, se pueden obtener los RTT entre cada salto de hops para una ruta a una IP determinada. De esta manera, se plantea en primer lugar 4 universidades diferentes, que serán utilizadas para poder llevar a cabo el análisis necesario.
+
+\begin{itemize}
+ \item {\bf Universidad Humboldt de Berlín}
+ 
+	{\bf Distancia}: 11.910 km 
+	
+	{\bf IP}: 141.20.5.188 (\url{www.hu-berlin.de}{})
+ 
+ \item {\bf Universidad de Sudáfrica}
+
+	{\bf Distancia}: 8.131 km
+	
+	{\bf IP}: 163.200.81.116  (\url{www.unisa.ac.za/}{})
+
+ \item {\bf Universidad de Tokio}
+
+	{\bf Distancia}: 18.360 km
+	
+	{\bf IP}: 210.152.135.178 (\url{www.u-tokyo.ac.jp}{}) 
+
+ \item {\bf Universidad de Harvard}
+
+	{\bf Distancia}: 8.658 km 
+	
+	{\bf IP}: 54.230.225.44 (\url{www.harvard.edu}{})
+
+\end{itemize}
+
+Las distancias descriptas corresponden a la distancia lineal que hay entre la universidad y un punto en común en Buenos Aires. La misma se obtuvo utilizando una opción dada por Google Maps \footnote{\url{maps.google.com}{}}. Ese dato se podrá utilizar para poder obtener el RTT teórico y aproximado de un paquete para cada una de las universidad a analizar. 
+
+Asumiendo que los enlaces son siempre de fibra óptica, y que el velocidad de propagación de las señales es de $2 \times 10^{5}$ km/s podemos estimar el RTT de la siguiente manera: 
+
+\begin{itemize}
+ \item Universidad Humboldt de Berlín: 
+\begin{equation}
+ 	RTT = 2 \times T_{prop} = 2 \times (Dist / V_{prop}) = 2 \times (11910 \text{ km} / 2\times10^5 \text{ km/s}) = 59.5517  \text{ ms}
+\end{equation}
+ 
+ \item Universidad de Sudáfrica: 
+ \begin{equation}
+ 	RTT = 2 \times T_{prop} = 2 \times (Dist / V_{prop}) = 2 \times (8131 \text{ km} / 2\times10^5 \text{ km/s}) = 40.655 \text{ ms}
+ \end{equation}
+ 
+ \item Universidad de Tokio: 
+ \begin{equation}
+ 	RTT = 2 \times T_{prop} = 2 \times (Dist / V_{prop}) = 2 \times (18360  \text{ km} / 2\times10^5 \text{ km/s}) = 91.8 \text{ ms}
+ \end{equation}
+ 
+ \item Universidad de Harvard: 
+ \begin{equation}
+ 	RTT = 2 \times T_{prop} = 2 \times (Dist / V_{prop}) = 2 \times (8658 \text{ km} / 2\times10^5 \text{ km/s}) = 43.29 \text{ ms}
+ \end{equation}
+ 
+\end{itemize}
+
+El valor obtenido representa un cota inferior muy burda del tiempo de comunicación entre Buenos Aires y las universidades seleccionadas. Para poder probarlo se ejecuta el traceroute desarrollado por nosotros utilizando Scapy. El traceroute envía DECIR LA CANT DE PAQUETES a cada hop intermedio, para obtener luego el tiempo promedio del RTT. A continuación, se presenta en gráficos la diferencia entre los RTT obtenidos en la práctica contra los calculados:
+
+\ponerGrafico{graficos/traceroute_empirico_alemania.png}{Alemania: Traceroute vs Cota teérica}{0.5}{tr_empirico_canada}
+
+\ponerGrafico{graficos/traceroute_empirico_sudafrica.png}{Sudáfrica: Traceroute vs Cota teérica}{0.5}{tr_empirico_rusia}
+
+\ponerGrafico{graficos/traceroute_empirico_japon.png}{Tokio: Traceroute vs Cota teórica}{0.5}{tr_empirico_china}
+
+\ponerGrafico{graficos/traceroute_empirico_eeuu.png}{Estados Unidos: Traceroute vs Cota teórica}{0.5}{tr_empirico_china}
