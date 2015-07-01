@@ -37,17 +37,17 @@ def estimatedRTT_for(n, file_name):
 
 def estimatedRTT_for_alfa(alfa, file_name):
     file = open(file_name, 'w+')
-    for n in range(len(rtts) / 50, len(rtts), len(rtts) / 50):
+    for n in range(len(rtts) / 10, len(rtts), len(rtts) / 10):
         file.write('estimatedRTT for %s: %s \n' % (n, estimatedRTT(alfa, n)))
     file.close()
 
 
 def main():
     host = input('Ingrese nombre del host: ')
-    cant_pings = 80
+    cant_pings = 10000 # o 5000 pero siempre el mismo para todos los host
     pingIterator(cant_pings, host)
 
-    for n in range(len(rtts) / 5, len(rtts), len(rtts) / 5):
+    for n in range(len(rtts) / 4, len(rtts), len(rtts) / 4):
         estimatedRTT_for(n, 'files/estimatedRTT_host_%s_n_fijo: %s.txt' % (host, n))
 
     for alfa in [x * 0.2 for x in range(6)]:
