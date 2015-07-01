@@ -27,7 +27,11 @@ class MyTraceRoute:
         ttl = 1
         no_termino = True
         while no_termino and ttl <= 255:
-        
+
+            print 
+            print 'TTL: %s' % ttl
+            print 
+
             self.times[ttl] = []
             for i in range(1, packages):
                 ans, unans, rtt = self.request(host, ttl, timeout)

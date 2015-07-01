@@ -47,17 +47,23 @@ def main():
     cant_pings = 80
     pingIterator(cant_pings, host)
 
-    for i in range(len(rtts) / 5, len(rtts), len(rtts) / 5):
-        estimatedRTT_for(i, 'files/estimatedRTT_%s_host_%s_n_fijo.txt' % (i, host))
+    for n in range(len(rtts) / 5, len(rtts), len(rtts) / 5):
+        estimatedRTT_for(n, 'files/estimatedRTT_host_%s_n_fijo: %s.txt' % (host, n))
 
-    for i in [x * 0.2 for x in range(6)]:
-        estimatedRTT_for_alfa(i, 'files/estimatedRTT_%s_host_%s_alfa_fijo.txt' % (i, host))
+    for alfa in [x * 0.2 for x in range(6)]:
+        estimatedRTT_for_alfa(alfa, 'files/estimatedRTT_host_%s_alfa_fijo: %s.txt' % (host, alfa))
 
     cant_reply = len(rtts)
     cant_request = len(rtts) + loss_packets
     print 'Echo reply: %s' % cant_reply
     print 'Echo request: %s' % cant_request
     print 'Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request)
+    
+    file = open('files/probability_host_%s' % host, 'w+')
+    file.write('Echo reply: %s' % cant_reply)
+    file.write('Echo request: %s' % cant_request)
+    file.write('Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request))
+    file.close()
 
 
 if __name__ == "__main__":
