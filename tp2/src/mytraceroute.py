@@ -28,23 +28,24 @@ class MyTraceRoute:
         no_termino = True
         while no_termino and ttl <= 255:
 
-            print 
+            print
             print 'TTL: %s' % ttl
-            print 
+            print
 
             self.times[ttl] = []
             for i in range(1, packages):
                 ans, unans, rtt = self.request(host, ttl, timeout)
 
-                if len(ans.res) > 0: 
+                if len(ans.res) > 0:
                     hop_ip = ans.res[0][1].src #storing the src ip from ICMP error message
 
                     if ans.res[0][1].type != 11: #checking for  ICMP echo-reply
                         no_termino = False
 
                 else:   # no contesto nadie
-                    hop_ip = "?"
-                    rtt = rtt_of_unknown
+                    pass
+                #    hop_ip = "?"
+                #    rtt = rtt_of_unknown
 
                 if not self.hops.has_key(ttl): self.hops[ttl] = []
                 if not hop_ip in self.hops[ttl]: self.hops[ttl].append(hop_ip)

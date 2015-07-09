@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-import json
+import json, os
 from math import sqrt
 from mytraceroute import *
 
@@ -40,7 +40,10 @@ def standard_value(diffs, avg, sd):
 def main():
     host = input('Ingrese nombre del host: ')
 
-    arch = 'traceroute_files/%s.txt' % host
+    path = 'traceroute_files'
+    if not os.path.exists(path):
+        os.mkdir(path)
+    arch = path+'/%s.txt' % host
 
     print "Comienzo de traceroute a: " + host
     print "Hora: " + str(time.time())
@@ -48,7 +51,7 @@ def main():
 
     traceroute = MyTraceRoute()
 
-    hops, times = traceroute.full_traceroute(host=host)
+    hops, times = traceroute.full_traceroute(host=host,packages=100)
     #print 'hops: %s' % hops
     #print 'times: %s' % times
 

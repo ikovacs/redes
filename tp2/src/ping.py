@@ -1,4 +1,5 @@
 #! /usr/bin/python
+import random, os
 from scapy.all import *
 from scapy.layers.inet import ICMP, IP
 
@@ -35,31 +36,41 @@ def estimatedRTT_for(n, file_name):
     file.close()
 
 
+M = 10 # Cant. de valores al azar tomados de rtts, debe ser múltiplo de su longitud (OJO xD)
+
 def estimatedRTT_for_alfa(alfa, file_name):
     file = open(file_name, 'w+')
-    for n in range(len(rtts) / 10, len(rtts), len(rtts) / 10):
-        file.write('estimatedRTT for %s: %s \n' % (n, estimatedRTT(alfa, n)))
+    paso_intervalo = len(rtts) / M
+    for m in range(M):
+        i = random.randint(m * paso_intervalo, (m+1) * paso_intervalo)
+        file.write('estimatedRTT for %s: %s \n' % (i, estimatedRTT(alfa, i)))
+#    for n in range(len(rtts) / 10, len(rtts), len(rtts) / 10):
+#        file.write('estimatedRTT for %s: %s \n' % (n, estimatedRTT(alfa, n)))
     file.close()
 
 
 def main():
     host = input('Ingrese nombre del host: ')
-    cant_pings = 10000 # o 5000 pero siempre el mismo para todos los host
+    cant_pings = 1000 # o 5000 pero siempre el mismo para todos los host
     pingIterator(cant_pings, host)
 
+    path = 'files'
+    if not os.path.exists(path):
+        os.mkdir(path)
+
     for n in range(len(rtts) / 4, len(rtts), len(rtts) / 4):
-        estimatedRTT_for(n, 'files/estimatedRTT_host_%s_n_fijo: %s.txt' % (host, n))
+        estimatedRTT_for(n, path+'/estimatedRTT_host_%s_n_fijo: %s.txt' % (host, n))
 
     for alfa in [x * 0.2 for x in range(6)]:
-        estimatedRTT_for_alfa(alfa, 'files/estimatedRTT_host_%s_alfa_fijo: %s.txt' % (host, alfa))
+        estimatedRTT_for_alfa(alfa, path+'/estimatedRTT_host_%s_alfa_fijo: %s.txt' % (host, alfa))
 
     cant_reply = len(rtts)
     cant_request = len(rtts) + loss_packets
     print 'Echo reply: %s' % cant_reply
     print 'Echo request: %s' % cant_request
     print 'Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request)
-    
-    file = open('files/probability_host_%s' % host, 'w+')
+
+    file = open(path+'/probability_host_%s' % host, 'w+')
     file.write('Echo reply: %s' % cant_reply)
     file.write('Echo request: %s' % cant_request)
     file.write('Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request))
