@@ -36,7 +36,7 @@ def estimatedRTT_for(n, file_name):
     file.close()
 
 
-M = 10 # Cant. de valores al azar tomados de rtts, debe ser múltiplo de su longitud (OJO xD)
+M = 10 # Cant. de valores al azar tomados de rtts, debe ser multiplo de su longitud (OJO xD)
 
 def estimatedRTT_for_alfa(alfa, file_name):
     file = open(file_name, 'w+')
