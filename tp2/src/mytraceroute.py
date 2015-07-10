@@ -16,7 +16,7 @@ class MyTraceRoute:
 
     def request(self, host, ttl=30, timeout=1):
         cur_time = time.time()
-        resp = sr(IP(dst=host, ttl=ttl) / ICMP(), timeout=timeout)
+        resp = sr(IP(dst=host, ttl=ttl) / ICMP(),verbose=0, timeout=timeout)
         rtt = (time.time() - cur_time)*1000
         resp += (rtt, )
         return resp
@@ -26,24 +26,28 @@ class MyTraceRoute:
         self.times = {}
         ttl = 1
         no_termino = True
+        pingLine = "%d|%s|%s"
         while no_termino and ttl <= 255:
 
-            print
-            print 'TTL: %s' % ttl
-            print
+            #print
+            #print 'TTL: %s' % ttl
+            #print
 
             self.times[ttl] = []
+
             for i in range(1, packages):
                 ans, unans, rtt = self.request(host, ttl, timeout)
 
                 if len(ans.res) > 0:
                     hop_ip = ans.res[0][1].src #storing the src ip from ICMP error message
 
-                    if ans.res[0][1].type != 11: #checking for  ICMP echo-reply
+                    if ans.res[0][1].type != 11: #checking for  ICMP time-exceeded
                         no_termino = False
 
+                    print pingLine % (ttl, hop_ip, str(rtt))
+
                 else:   # no contesto nadie
-                    pass
+                    print pingLine % (ttl, hop_ip, 'TIME_OUT')
                 #    hop_ip = "?"
                 #    rtt = rtt_of_unknown
 
