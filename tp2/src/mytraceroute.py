@@ -21,7 +21,7 @@ class MyTraceRoute:
         resp += (rtt, )
         return resp
 
-    def full_traceroute(self, host, timeout=1, packages=10):
+    def full_traceroute(self, host, timeout=1, packages=1000):
         self.hops = {}
         self.times = {}
         ttl = 1
