@@ -51,7 +51,7 @@ def main():
 
     traceroute = MyTraceRoute()
 
-    hops, times = traceroute.full_traceroute(host=host,packages=10)
+    hops, times = traceroute.full_traceroute(host=host,packages=1000)
     #print 'hops: %s' % hops
     #print 'times: %s' % times
 
