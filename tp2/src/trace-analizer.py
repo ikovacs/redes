@@ -103,10 +103,18 @@ pprint.pprint(average)
 
 rtti = {}
 rtti[1] = average[1]
+anterior_valido = average[1]
 for ttl in range(2, len(average)+1):
-	rtti[ttl] = average[ttl] - average[ttl-1]
+	if average[ttl] > average[ttl-1]:
+		rtti[ttl] = average[ttl] - average[ttl-1]
+		anterior_valido = average[ttl]
+	else:
+		rtti[ttl] = average[ttl] - anterior_valido
 	if rtti[ttl] < 0.0:
 		rtti[ttl] = 0.0
+
+pprint.pprint('RTTi')
+pprint.pprint(rtti)
 
 for ttl in average:
 	average[ttl] = 0
@@ -117,19 +125,31 @@ for ttl in rtti:
 	if len(rtti) > 0:
 		average[ttl] /= len(rtti)
 
-for ttl in rtti:
-	deviation[ttl] += pow(rtti[ttl] - average[ttl], 2)
-	if len(rtti) > 1:
-		deviation[ttl] /= len(rtti)
-	deviation[ttl] = math.sqrt(deviation[ttl])
 
 #pprint.pprint(rtti)
+longitud = 0
+for ttl,rttime in rtti.items():
+	if rttime > 0:
+		longitud += 1
+
+AVERAGE = sum(rtti.values()) / longitud
+
+DEVIATION = 0
+for ttl in rtti:
+	if average[ttl] > 0:
+		DEVIATION += pow(rtti[ttl] - AVERAGE, 2)
+DEVIATION = math.sqrt(DEVIATION / len(rtti) - 1)
+
+pprint.pprint('desviation')
+pprint.pprint(DEVIATION)
+
+print AVERAGE 
 
 zrtti = {}
 
 for ttl in rtti:
-	if deviation[ttl] != 0:
-		zrtti[ttl] = (rtti[ttl] - average[ttl]) / deviation[ttl]
+	if rtti[ttl] != 0:
+		zrtti[ttl] = (rtti[ttl] - AVERAGE) / DEVIATION
 	else:
 		zrtti[ttl] = 0.0
 
