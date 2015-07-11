@@ -77,7 +77,7 @@ def main():
     #traceroute.get_path()
     #print traceroute.get_path()
 
-    print_hops(arch, hops, avg_host, zrtt, diffs)
+    # print_hops(arch, hops, avg_host, zrtt, diffs)
     #print "Terminado traceroute a: " + host
 
 

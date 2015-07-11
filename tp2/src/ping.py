@@ -51,10 +51,10 @@ def estimatedRTT_for_alfa(alfa, file_name):
 
 def main():
     host = input('Ingrese nombre del host: ')
-    cant_pings = 1000 # o 5000 pero siempre el mismo para todos los host
+    cant_pings = 1000
     pingIterator(cant_pings, host)
 
-    path = 'files'
+    path = 'ping_files'
     if not os.path.exists(path):
         os.mkdir(path)
 
