@@ -1,1 +1,62 @@
 \section{Gráficos y análisis}
+
+En esta parte del trabajo práctico se requiere determinar los enlaces transatlánticos que utiliza un paquete para llegar a destino. Estos enlaces se caracterizan por atravezar el Atlántico, por lo tanto poseen ciertas propiedades que los diferencian de los demás. Para poder detectar los posibles enlaces se utilizan las mediciones realizadas en la seeción anterior. A partir de los valores que se obtienen al ir recorriendo cada enlace por el que pasa una señal se puede determinar donde se encuentra el mayor salto. 
+Utilizandose el ZRTT calculado para cada salto se puede definir cuales son los valores que se encuentran más alejados del promedio, por lo tanto, aquellos que cumplan esa condición, serán los que representen el cambio de continente, habíendose atravezado el Atlántico. 
+
+Un ejemplo de cuando no funciona la metodología presentada, es aquel paquete que no utiliza por ningún enlace transatlántico. El algoritmo se basa en los tiempos transcurridos entre cada hops, por lo tanto no interesa si pasó o no por algún enlace específico, y devolverá como potencial a aquel que no corresponda. 
+
+%\centerline{\includegraphics[width=0.8\textwidth]{.imagenes/traceroute_empirico_alemania.png}}
+
+\begin{center}
+\scalebox{0.7}[1]{
+ \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+    Hop & dirección IP & País & Ciudad & ISP & Lat - Long 	\\
+    \hline
+
+    \hline
+ \end{tabular}}
+\end{center}
+
+De acuerdo a la heurística desarrollada, el enlace trasatlántico se encuentra el marcador con la letra $CUAL$, y corresponde al que se encuentra entre el hop $NUMERO$ y el $NUMERO$. 
+
+%\centerline{\includegraphics[width=0.8\textwidth]{.imagenes/traceroute_empirico_alemania.png}}
+
+\begin{center}
+\scalebox{0.7}[1]{
+ \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+    Hop & dirección IP & País & Ciudad & ISP & Lat - Long 	\\
+    \hline
+
+    \hline
+ \end{tabular}}
+\end{center}
+
+
+%\centerline{\includegraphics[width=0.8\textwidth]{.imagenes/traceroute_empirico_alemania.png}}
+
+\begin{center}
+\scalebox{0.7}[1]{
+ \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+    Hop & dirección IP & País & Ciudad & ISP & Lat - Long 	\\
+    \hline
+
+    \hline
+ \end{tabular}}
+\end{center}
+
+%\centerline{\includegraphics[width=0.8\textwidth]{.imagenes/traceroute_empirico_alemania.png}}
+
+\begin{center}
+\scalebox{0.7}[1]{
+ \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+    Hop & dirección IP & País & Ciudad & ISP & Lat - Long 	\\
+    \hline
+
+    \hline
+ \end{tabular}}
+\end{center}
+
