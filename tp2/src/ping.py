@@ -41,11 +41,11 @@ M = 10 # Cant. de valores al azar tomados de rtts, debe ser multiplo de su longi
 def estimatedRTT_for_alfa(alfa, file_name):
     file = open(file_name, 'w+')
     paso_intervalo = len(rtts) / M
-    for m in range(M):
-        i = random.randint(m * paso_intervalo, (m+1) * paso_intervalo)
-        file.write('estimatedRTT for %s: %s \n' % (i, estimatedRTT(alfa, i)))
-#    for n in range(len(rtts) / 10, len(rtts), len(rtts) / 10):
-#        file.write('estimatedRTT for %s: %s \n' % (n, estimatedRTT(alfa, n)))
+#    for m in range(M):
+#        i = random.randint(m * paso_intervalo, (m+1) * paso_intervalo)
+#        file.write('estimatedRTT for %s: %s \n' % (i, estimatedRTT(alfa, i)))
+    for n in range(len(rtts) / 10, len(rtts), len(rtts) / 10):
+        file.write('estimatedRTT for %s: %s \n' % (n, estimatedRTT(alfa, n)))
     file.close()
 
 
