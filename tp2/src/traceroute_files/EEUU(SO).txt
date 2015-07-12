@@ -1,0 +1,13 @@
+traceroute to www.bu.edu (128.197.26.4), 30 hops max, 60 byte packets
+ 1  DD-WRT (10.0.0.1)  0.534 ms  0.931 ms  1.206 ms
+ 2  10.24.128.1 (10.24.128.1)  25.428 ms  25.820 ms  26.026 ms
+ 3  cpe-181-47-254-85.telecentro-reversos.com.ar (181.47.254.85)  26.587 ms  26.800 ms  27.004 ms
+ 4  global-crossing-argentina-s-a.xe-0-3-1.ar3.eze1.gblx.net (208.178.195.214)  29.641 ms  29.849 ms  29.413 ms
+ 5  xe-0-3-1.ar3.eze1.gblx.net (208.178.195.213)  27.627 ms  27.186 ms  27.397 ms
+ 6  po3-20G.ar3.MIA2.gblx.net (67.17.75.66)  158.827 ms po2.ar3.MIA2.gblx.net (67.17.68.234)  162.423 ms  166.291 ms
+ 7  ae5.edge2.miami2.level3.net (4.68.111.121)  167.545 ms  206.109 ms  199.877 ms
+ 8  ae-0-11.bar2.Boston1.Level3.net (4.69.140.90)  190.840 ms  195.251 ms  195.455 ms
+ 9  BOSTON-UNIV.bar2.Boston1.Level3.net (4.53.56.6)  191.979 ms  195.845 ms  192.189 ms
+10  comm595-core-aca01-gi2-16-comm595-bdr-gw01-gi1-2.bu.edu (128.197.254.113)  213.823 ms  213.600 ms  214.029 ms
+11  buic010-dist-aca01-te5-5-comm595-core-aca01-te3-2.bu.edu (128.197.254.150)  196.297 ms  199.405 ms  184.602 ms
+12  www.bu.edu (128.197.26.4)  225.081 ms  219.646 ms  200.697 ms

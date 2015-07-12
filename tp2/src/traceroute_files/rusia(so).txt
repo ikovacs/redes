@@ -1,0 +1,16 @@
+traceroute to www.msu.ru (188.44.50.103), 30 hops max, 60 byte packets
+ 1  192.168.1.1 (192.168.1.1)  0.780 ms  1.140 ms  1.526 ms
+ 2  10.20.128.1 (10.20.128.1)  25.062 ms  29.834 ms  30.225 ms
+ 3  cpe-181-47-254-33.telecentro-reversos.com.ar (181.47.254.33)  30.616 ms  30.602 ms  31.401 ms
+ 4  global-crossing-argentina-s-a.xe-0-1-0.ar3.eze1.gblx.net (208.178.195.210)  32.207 ms  32.187 ms  32.579 ms
+ 5  xe-0-1-0.ar3.eze1.gblx.net (208.178.195.209)  31.743 ms  31.320 ms  31.707 ms
+ 6  * * ae5.edge2.miami2.level3.net (4.68.111.121)  139.560 ms
+ 7  ae-113-3503.bar1.Stockholm1.Level3.net (4.69.158.249)  267.108 ms  265.859 ms ae-111-3501.bar1.Stockholm1.Level3.net (4.69.158.241)  266.253 ms
+ 8  ae-112-3502.bar1.Stockholm1.Level3.net (4.69.158.245)  266.647 ms ae-113-3503.bar1.Stockholm1.Level3.net (4.69.158.249)  267.450 ms *
+ 9  STATE-INSTI.bar1.Stockholm1.Level3.net (213.242.110.198)  292.249 ms  289.275 ms  288.851 ms
+10  * * *
+11  m9-3-gw.msk.runnet.ru (194.85.40.229)  289.604 ms  287.394 ms  281.321 ms
+12  msu.msk.runnet.ru (194.190.254.118)  288.645 ms  287.825 ms  287.008 ms
+13  93.180.0.174 (93.180.0.174)  290.700 ms  289.169 ms  288.353 ms
+14  188.44.33.1 (188.44.33.1)  288.354 ms  284.989 ms  283.927 ms
+15  188.44.50.103 (188.44.50.103)  302.470 ms !X  302.516 ms !X  299.294 ms !X
