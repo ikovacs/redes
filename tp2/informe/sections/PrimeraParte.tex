@@ -1,6 +1,5 @@
 \section{Caracterizando rutas}
 
-\subsection{Estimación del RTT}
 A partir de la tool implementada, que permite realizar un \textbf{traceroute}, se pueden obtener los RTT entre cada salto de hops para una ruta a una IP determinada. De esta manera, se plantea en primer lugar 4 universidades diferentes, que serán utilizadas para poder llevar a cabo el análisis necesario utilizando la herramienta.
 
 \begin{itemize}
@@ -61,44 +60,58 @@ El valor obtenido representa un cota inferior muy burda del tiempo de comunicaci
 
 \centerline{\includegraphics[width=0.8\textwidth]{imagenes/1ra_parte/1Parte-comparacionRTT}}
 
-Se muestran los resultado utilizando escala logarítmica para poder observarlos de manera clara. A lo largo del trabajo práctico se podrán ir observando las situaciones que hacen a que el RTT teórico sea tanto menor que el real.
+Se muestran los resultado utilizando escala logarítmica para poder observarlos de manera clara. A lo largo del trabajo práctico se podrán ir observando las situaciones que demuestan el porque el RTT teórico puede valer tanto menos que el de la realidad.
 
-Por otro lado, se decide comparar la herramienta desarrollada utilizando Scapy, contra el traceroute brindado por el sistema operativo. Ambos traceroutes envían una cierta cantidad de paquetes a cada host intermedio que se tiene para llegar al de destino, y miden el tiempo obtenido. Luego, se realiza un promedio del mismo. A continuación, se presentan los RTT obtenidos para cada host intermedio utilizando ambas herramientas. 
+Por otro lado, se decide comparar la herramienta desarrollada utilizando Scapy, contra el traceroute brindado por el sistema operativo. Ambos traceroutes envían una cierta cantidad de paquetes a cada host intermedio que se tiene para llegar al de destino. En el caso de la herramienta desarrollada, esto se logra determinando el valor máximo de TTL que tiene el paquete. Dicho valor representa la cantidad máxima de saltos que puede tener el mensaje enviado. Además, al recibirse la respuesta por parte del hop al que un paquete llega con TTL igual a cero, se mide el tiempo que toma en milisegundos. Este tiempo de ida y vuelta de un paquete se denomina RTT. En el caso de nuestras herramienta desarrollada, se envía mil paquetes con un mismo valor de TTL máximo, y luego se obtiene el RTT aproximado, promediando el de todos. 
+
+A continuación, se presentan los RTT obtenidos para cada hop intermedio utilizando ambas herramientas. 
 
 \centerline{\includegraphics[width=1\textwidth]{imagenes/1ra_parte/Alemania_1ergrafico.png}}
 
 \centerline{\includegraphics[width=1\textwidth]{imagenes/1ra_parte/Rusia_1ergrafico.png}}
 
+Se observa en este escenario, que las mediciones realizadas por el traceroute desarrollado presenta mediciones más altas, pero probablemente sean más certeras. 
+
 \centerline{\includegraphics[width=1\textwidth]{imagenes/1ra_parte/Japon_1ergrafico.png}}
+
+Se cumple en este ejemplo, que muchos de los hops intermedios al host final, no responden al pedido. Esto presenta dificultadades en el analisis de los datos. 
 
 \centerline{\includegraphics[width=1\textwidth]{imagenes/1ra_parte/EEUU_1ergrafico.png}}
 
-Los gráficos presentados permitieron obtener diversas conclusiones con respecto al comportamiento de los paquetes en las distintas redes. Estos comportamientos se ven reflados en los tiempos de RTT que presenta cada paquete para cada TTL. A continuación enumeranemos los escenarios que se pudieron encontrar y que generan inconsistencias en las mediciones:
+El análisis de los datos obtenidos para cada herrmienta y los gráficos presentados, permitieron obtener diversas conclusiones con respecto al comportamiento de los paquetes en las distintas redes. Estos comportamientos se ven reflados en los tiempos de RTT que presenta cada paquete para cada TTL. A continuación enumeranemos los escenarios que se pudieron encontrar y que generan inconsistencias en las mediciones:
+
 \begin{itemize}
 \item Existe más de un ruta posible para un cierto número de TTL para un mismo host de destino. En el caso de la herramienta de traceroute desarrollada por nosotros, no se distingue por host sino por número de TTL. Es decir, el promedio de RTT obtenido a partir de mil paquetes enviados con una misma IP destino y TTL, se realizará sin distinguir si la dirección IP correspondiente a la respuesta es siempre el mismo. Existe una amplia red de routers intermedios que se pueden utilizar para llegar a un mismo destino. En el caso del traceroute brindado por el sistema operativo, se realiza el promedio sobre únicamente tres paquetes diferentes, dándose mayormente que tengan la misma dirección IP. 
 
 \item Hay host intermedios a un destino final que pueden no responder a un ping enviado. Esto puede deberse a que los mismos no estan configurados para responder a este tipo de pedido o que esten congestionados de manera tal de no llegar a responder a tiempo. En el primer caso, no importa la herramienta que se utilice, el resultado siempre será el mismo. Pero, para el segundo escenario planteado, la herramienta brindada por el sistema operativo no intenta resolver la problemática. Sin embargo, en la desarrollada para este trabajo práctico, se basa en el envío de mil paquetes a un mismo TTL, es decir, que el congestionamiento del host podrá liberarse para alguno de los pedidos y la respuesta llegará antes del time out, pudiendose así obtener un RTT estimado. El RTT promedio obtenido del envío de los mil paquetes descarta aquellos que tuvieron time-out para así no disminuir el valor final.
 
-\item Un caso que no es contemplado en ninguno de las dos herramientas utilizadas, es que la ruta que siga un paquete, pasando por una determinada cantidad de hops, sea siempre la misma. Para el cálculo de los RTT no se contempla que una ruta pueda tomar más tiempo que otra, ya que no se tiene forma de saber cual es el camino exacto que realiza un mensaje para llegar a un determinado host. En el caso de la herramienta desarrollada se simula el paso del paquete por distintos host hasta llegar el de la universidad deseada, pero con respecto a los RTT de los hop intermedios, se los trata sin distinguir la ruta que realizan. 
-
-
+\item Un caso que no es contemplado en ninguno de las dos herramientas utilizadas, es que la ruta que siga un paquete, pasando por una determinada cantidad de hops, no sea siempre la misma. Para el cálculo de los RTT no se contempla que una ruta pueda tomar más tiempo que otra, ya que no se tiene forma de saber cual es el camino exacto que realiza un mensaje para llegar a un determinado hop intermedio. En el caso de la herramienta desarrollada se simula el paso del paquete por distintos host hasta llegar el de la universidad deseada, pero con respecto a los RTT de los hop intermedios, se los trata sin distinguir la ruta que realizan. 
 \end{itemize}
 
 
 
-Uno de los motivos que afecta a los tiempos en los que un paquete tarda en llegar a un host y luego retornar, es el del congestionamiento que puede existir en la red. El mismo surge a partir de un alto número de paquetes existentes en la misma, debido a un gran número de personas que intentan conectarse a un mismo lugar. Para poder observar este comportamiento, es decir, los fluctuantes valores de RTT para cada hop intermedio, se realizó el siguiente experimento, el cual consiste en analizar el tráfico de la red en distintas horas del día. Para ello se ejecutó el traceroute desarrollado en tres horarios diferentes. Se obtienen los siguientes gráficos:
+Uno de los motivos que afecta a los tiempos en los que un paquete tarda en llegar a un host y luego retornar, es el del congestionamiento que puede existir en la red. El mismo surge a partir de un alto número de paquetes existentes en la misma, debido a un gran número de personas que intentan conectarse a un mismo lugar. Para poder observar este comportamiento, es decir, los fluctuantes valores de RTT para cada hop intermedio, se realizó el siguiente experimento, el cual consiste en analizar el tráfico de la red en distintas horas del día. Para ello se ejecutó el traceroute desarrollado en tres horarios diferentes. 
 
-%\centerline{\includegraphics[width=0.8\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_alemania.png}}
+En primer lugar se presenta la Universidad Humboldt de Berlín. 
 
-\centerline{\includegraphics[width=0.8\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_rusia.png}}
+%\centerline{\includegraphics[width=0.9\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_alemania.png}}
 
-\centerline{\includegraphics[width=0.8\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_japon.png}}
+El siguiente diagrama corresponde a los valores de RTT obtenido para cada TLL con destino final la Universidad de Moscú.
 
-\centerline{\includegraphics[width=0.8\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_eeuu.png}}
+\centerline{\includegraphics[width=0.9\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_rusia.png}}
 
-Conclusiones de eso..
+A continuación se presenta el caso de la Universidad de Tokio.
 
-Luego, se agrega a la herramienta desarrollada por nosotros, un agregado para que se calcule el valor standard (ZRTT) de cada salto con respecto a la ruta global. El cálculo a realizarse es el siguiente:
+\centerline{\includegraphics[width=0.9\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_japon.png}}
+
+Finalmente, los valores obtenidos para la Universidad de Boston. 
+
+\centerline{\includegraphics[width=0.9\textwidth]{imagenes/1ra_parte/trace_distintos_horarios_eeuu.png}}
+
+Se puede observar que dependiendo del horario en el que se realiza la medición, algunos RTT para hop intermedios, presentan una diferencia importante con respecto a los de otros momentos del día. 
+
+
+Luego, para continuar con el análisis de la red, se agrega a la herramienta desarrollada por nosotros un agregado para que se calcule el valor standard (ZRTT) de cada salto con respecto a la ruta global. El cálculo a realizarse es el siguiente:
 
  \begin{equation}
  	ZRTT_i = \frac{RTT_i - \overline{RTT}}{SRTT} 

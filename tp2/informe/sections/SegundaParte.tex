@@ -1,35 +1,9 @@
 \section{Gráficos y análisis}
 
-En esta parte del trabajo práctico se requiere determinar los enlaces transatlánticos que utiliza un paquete para llegar a destino. Estos enlaces se caracterizan por atravezar el Atlántico, por lo tanto poseen ciertas propiedades que los diferencian de los demás. Para poder detectar los posibles enlaces se utilizan las mediciones realizadas en la seeción anterior. A partir de los valores que se obtienen al ir recorriendo cada enlace por el que pasa una señal se puede determinar donde se encuentra el mayor salto.
+En esta parte del trabajo práctico se requiere determinar los enlaces transatlánticos que utiliza un paquete para llegar a destino. Estos enlaces se caracterizan por atravezar el Atlántico, por lo tanto poseen ciertas propiedades que los diferencian de los demás. Para poder detectar los posibles enlaces se utilizan las mediciones realizadas en la sección anterior. A partir de los valores que se obtienen al ir recorriendo cada enlace por el que pasa una señal se puede determinar donde se encuentra el mayor salto.
 Utilizandose el ZRTT calculado para cada salto se puede definir cuales son los valores que se encuentran más alejados del promedio, por lo tanto, aquellos que cumplan esa condición, serán los que representen el cambio de continente, habíendose atravezado el Atlántico.
 
 Un ejemplo de cuando no funciona la metodología presentada, es aquel paquete que no utiliza por ningún enlace transatlántico. Determinaremos como trasatlánticos a aquel que no corresponda, ya que nos basamos en los tiempos transcurridos entre cada hops, por lo tanto no interesa si pasó o no por algún enlace específico.
-
-\subsection{Universidad de Moscú}
-\centerline{\includegraphics[width=0.8\textwidth]{mapas/rusia.png}}
-
-\begin{center}
- \begin{tabular}{|l|l|l|l|l|}
-    \hline
-    Hop &Dirección IP &País &Ciudad &Lat - Long \\ \hline \hline
-    1 & 192.168.1.1 &  &  & 0 0 \\ \hline
-    2 & 10.20.128.1 &  &  & 0 0 \\ \hline
-    3 & 181.47.254.33 & Argentina &  & -34.6033 -58.3817 \\ \hline
-    4 & 208.178.195.210 & United States & Virginia & 36.8267 -76.0179 \\ \hline
-    5 & 208.178.195.209 & United States & Virginia & 36.8267 -76.0179 \\ \hline
-    6 & 4.68.111.121 & United States &  & 38 -97 \\ \hline
-    7 & 4.69.158.245 & United States &  & 38 -97 \\ \hline
-    8 & 4.69.158.245 & United States &  & 38 -97 \\ \hline
-    9 & 213.242.110.198 & United Kingdom &  & 51.5 -0.13 \\ \hline
-    11 & 194.85.40.229 & Russia &  & 55.75 37.6166 \\ \hline
-    12 & 194.190.254.118 & Russia &  & 55.75 37.6166 \\ \hline
-    13 & 93.180.0.174 & Russia & Moscow & 55.7522 37.6156 \\ \hline
-    14 & 188.44.33.1 & Russia & Moscow & 55.7522 37.6156 \\ \hline
-    15 & 188.44.50.103 & Russia & Moscow & 55.7522 37.6156 \\ \hline
- \end{tabular}
-\end{center}
-
-De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el host de Estados Unidos y el de Inglaterra. De acuerdo a la tabla se puede notar que el mismo sería entre el número $8$ y el $9$. Este salto deberá notarse en el valor de ZRTT observados en la sección anterior. COMPARAR CON EL DE LA SECCION ANTERIOR
 
 \subsection{Universidad Humboldt de Berlín}
 \centerline{\includegraphics[width=0.8\textwidth]{mapas/Alemania.jpeg}}
@@ -58,7 +32,34 @@ De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el
  \end{tabular}
 \end{center}
 
-En este caso se considera, observando el mapa, como enlace trasatlántico aquel que ocurre entre el hop $9$ y el $10$. Se puede observar en comparación con las variaciones de los valores de ZRTT, que el correspondiente al hop $10$, presenta un valor alto con respecto a los previos. Esto demuestra que el ZRTT es efectivo al momento de definir los saltos con cambios de continentes y que atraviezan el Atlántico.
+En este caso se considera, observando el mapa, como enlace trasatlántico aquel que ocurre entre el hop $9$ y el $10$, ya que se atraviesa el atlántico. Sin embargo, al observar las comparaciones de valores de ZRTT esto ocurre recién en el salto del hop $10$ al $11$. Esto se debe a que, si se observan los datos sin modificar, los paquetes realizan dos caminos diferentes en cierto punto, llegando al enlace trasatlántico antes o después, según sea el caso. Al procesar los datos de manera conjunta sin distinguir esta situación, se puede concluir que es mayor la cantidad de veces que el paquete realiza el camino por el cual cruza el Atlántico luego del paquete $10$. 
+
+
+\subsection{Universidad de Moscú}
+\centerline{\includegraphics[width=0.8\textwidth]{mapas/rusia.png}}
+
+\begin{center}
+ \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    Hop &Dirección IP &País &Ciudad &Lat - Long \\ \hline \hline
+    1 & 192.168.1.1 &  &  & 0 0 \\ \hline
+    2 & 10.20.128.1 &  &  & 0 0 \\ \hline
+    3 & 181.47.254.33 & Argentina &  & -34.6033 -58.3817 \\ \hline
+    4 & 208.178.195.210 & United States & Virginia & 36.8267 -76.0179 \\ \hline
+    5 & 208.178.195.209 & United States & Virginia & 36.8267 -76.0179 \\ \hline
+    6 & 4.68.111.121 & United States &  & 38 -97 \\ \hline
+    7 & 4.69.158.245 & United States &  & 38 -97 \\ \hline
+    8 & 4.69.158.245 & United States &  & 38 -97 \\ \hline
+    9 & 213.242.110.198 & United Kingdom &  & 51.5 -0.13 \\ \hline
+    11 & 194.85.40.229 & Russia &  & 55.75 37.6166 \\ \hline
+    12 & 194.190.254.118 & Russia &  & 55.75 37.6166 \\ \hline
+    13 & 93.180.0.174 & Russia & Moscow & 55.7522 37.6156 \\ \hline
+    14 & 188.44.33.1 & Russia & Moscow & 55.7522 37.6156 \\ \hline
+    15 & 188.44.50.103 & Russia & Moscow & 55.7522 37.6156 \\ \hline
+ \end{tabular}
+\end{center}
+
+De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el host de Estados Unidos y el de Inglaterra. De acuerdo a la tabla se puede notar que el mismo sería entre el número $10$ y el $11$. Este salto presentará un alto valor de RTT a aquellos hops que se encuentren luego del número $11$ ya que se incorpora el tiempo de ida y vuelta por el enlace trasatlántico. Si nos dirijimos al gráfico de la página $10$, podremos observar con el hop que presenta un valor de ZRTT más alto es el $11$, por lo que se demuestra lo que ocurre en la realidad.    
 
 \subsection{Universidad de Tokio}
 \centerline{\includegraphics[width=0.8\textwidth]{mapas/Japon.png}}
@@ -89,7 +90,7 @@ En este caso se considera, observando el mapa, como enlace trasatlántico aquel 
  \end{tabular}
 \end{center}
 
-Este caso presenta una complicación mayor en el análisis, ya que tiene dos enlaces que pueden ser considerados trasatlánticos si únicamente nos basamos en los resultados obtenidos para el valor standar. En el caso del salto del hop $8$ al $9$ puede presentarse como uno trasatlántico, ya que su tiempo de recorrida es bastante alto debido a la enorme distancia. Por otro lado, el que verdaderamente debará responderse como un enlace trasatlántico es el que va del hop de Estados Unidos, el número $16$, al de Japón, el número $17$. 
+En el caso del salto del hop $8$ al $9$ puede presentarse como uno trasatlántico, ya que su tiempo de recorrida es bastante alto debido a la enorme distancia. Por otro lado, el que verdaderamente debará responderse como un enlace trasatlántico es el que va del hop de Estados Unidos, el número $16$, al de Japón, el número $17$. Se observa en los gráficos comparativos de los valores del ZRTT correspondiente a cada hop, que el del número 15 corresponde al trasatlántico. En este caso, está ocurriendo lo mismo que se vio para la universidad de Alemania. Existe más de un camino posible para poder alcanzar el hop destino, y todos deberán pasar por el enlace trasatlántico. Puede darse tanto entre dos hops determinados o los consecutivos. 
 
 \subsection{Universidad de Boston}
 \centerline{\includegraphics[width=0.8\textwidth]{mapas/EEUU.jpg}}
@@ -112,3 +113,4 @@ Este caso presenta una complicación mayor en el análisis, ya que tiene dos enl
 \end{center}
 
 La universidad seleccionada se encuentra en Estados Unidos, por lo cual no existirá enlace trasatlántico, pero si se observa un salto importante de un host en Argentina a uno en Estados Unidos. Por lo tanto, en la sección anterior, se deberá observar al salto entre el TTL $3$ y el $4$ como el significativamente mayor con respecto a los restantes. 
+Un problema importante presentado en el caso de esta universidad, es la cantidad de host intermedios que presentan un time-out. Se ve, por ejemplo, en los resultados del análisis de los valores standar para cada salto, que el salto entre el hop $5$ y el $6$ es significativamente mayor al restante. Sin embargo, al observar las distancias entre esos dos hops, la misma no es importante. Esto ocurre, como consecuencia a que el hop número $5$ no responde a muchos de los pedidos, por lo cual se genera un RTT promedio muy bajo. 
