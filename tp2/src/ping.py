@@ -64,6 +64,9 @@ def main():
     for alfa in [x * 0.2 for x in range(6)]:
         estimatedRTT_for_alfa(alfa, path+'/estimatedRTT_host_%s_alfa_fijo: %s.txt' % (host, alfa))
 
+    alfa = 0.9
+    estimatedRTT_for_alfa(alfa, path+'/estimatedRTT_host_%s_alfa_fijo: %s.txt' % (host, alfa))
+
     cant_reply = len(rtts)
     cant_request = len(rtts) + loss_packets
     print 'Echo reply: %s' % cant_reply
