@@ -1,0 +1,1 @@
+Echo reply: 1000Echo request: 1000Estimated Packet Loss Probability: 0
