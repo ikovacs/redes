@@ -1,20 +1,24 @@
 #! /usr/bin/python
-import random, os
+import random, os, sys
 from scapy.all import *
 from scapy.layers.inet import ICMP, IP
 
 rtts = []
 loss_packets = 0
 
+EchoReply = 0
 
 def ping_echo_request_to(host, ttl=255, timeout=1):
     cur_time = time.time()
-    resp = sr(IP(dst=host, ttl=ttl) / ICMP(), timeout=timeout)
-    if len(resp) <= 0:
-        loss_packets += 1
-    else:
+    answer = sr1(IP(dst=host, ttl=ttl) / ICMP(),verbose=0, timeout=timeout)
+
+    if answer and answer[ICMP].type == EchoReply:
         rtt = (time.time() - cur_time) * 1000
+        global rtts
         rtts.append(rtt)
+    else:
+        global loss_packets
+        loss_packets += 1
 
 
 def pingIterator(cant, host):
@@ -50,8 +54,8 @@ def estimatedRTT_for_alfa(alfa, file_name):
 
 
 def main():
-    host = input('Ingrese nombre del host: ')
-    cant_pings = 1000
+    host = sys.argv[1] #input('Ingrese nombre del host: ')
+    cant_pings = 10000
     pingIterator(cant_pings, host)
 
     path = 'ping_files'
