@@ -8,15 +8,15 @@ El total de paquetes Echo Request enviados fue de 1000. Consideramos que sería 
 
 \subsection{Estimación de RTT con alfa fijo}
 
-En primer lugar, para estimar los RTT de cada simulacro de conexión, analizamos las mediciones realizadas para los paquetes recibidos según la siguiente fórmula que involucra los diferentes valores obtenidos en el muestreo y un coeficiente \alpha que mantuvimos en el intervalo $[0..1]$:
+En primer lugar, para estimar los RTT de cada simulacro de conexión, analizamos las mediciones realizadas para los paquetes recibidos según la siguiente fórmula que involucra los diferentes valores obtenidos en el muestreo y un coeficiente $\alpha$ que mantuvimos en el intervalo $[0..1]$:
 
-\begin{center}
-EstimatedRTT[i] = \alpha \texttimes EstimatedRTT[i-1] + (1 − \alpha) \texttimes SampleRTT[i]
-\end{center}
+\begin{equation}
+EstimatedRTT_{[i]} = EstimatedRTT_{[i - 1]} \times \alpha + SampleRTT_{[i]} \times (1 - \alpha)
+\end{equation}
 
-Fuimos tomando algunos valores de alfa que consideramos representativos dentro del intervalo mencionado, y para cada valor seleccionado, realizamos la estimación con diversos subconjuntos de muestras RTT, cada vez de mayor volumen. Para el caso de 100 paquetes se tomaron las primeras 100 mediciones, luego las 200 primeras y así sucesivamente.
+Fuimos tomando algunos valores de alfa que consideramos representativos dentro del intervalo mencionado, y para cada valor seleccionado, realizamos la estimación con diversos subconjuntos de muestras RTT, cada vez de mayor volumen. Para el caso de 100 paquetes se tomaron al azar 100 muestras, luego 200 y así sucesivamente.
 
-El gráfico siguiente revela las estimaciones obtenidas para el Round Trip Time relativo al experimento con la Universidad Humboldt de Berlín. Como mencionamos previamente, fijando diversos valores de alfa fuimos tomando cantidades cada vez mayores de muestras reales. Se puede apreciar notoriamente como a mayores valores del coeficiente alfa, la estimación es mas consistente y menos suceptible a las bruscas variaciones de la muestra original (algo que se observa en el caso \alpha = 0, donde EstimatedRTT[i] = SampleRTT[i] para todo valor de i).
+El gráfico siguiente revela las estimaciones obtenidas para el Round Trip Time relativo al experimento con la Universidad Humboldt de Berlín. Como mencionamos previamente, fijando diversos valores de alfa fuimos tomando cantidades cada vez mayores de muestras reales. Se puede apreciar notoriamente como a mayores valores del coeficiente alfa, la estimación es mas consistente y menos suceptible a las bruscas variaciones de la muestra original (algo que se observa en el caso $\alpha$ $=$ $0$, donde EstimatedRTT$_{[i]}$ $=$ SampleRTT$_{[i]}$ para todo valor de i).
 
 \centerline{\includegraphics[width=0.8\textwidth]{imagenes/3ra_parte/ping_varios_alfa_fijo_variando_n_alemania.png}}
 
@@ -75,9 +75,9 @@ Para este experimento, nos dimos cuenta que la cantidad original de pings no era
 
 En base a los datos resultantes, estimaremos entonces cual es la probabilidad de perder un paquete en una conexión con los hosts de dichas instituciones. La fórmula utilizada es la siguiente:
 
-\begin{center}
-EstimatedPacketLossProbability = 1 - \frac{#Echo reply}{#Echo request}
-\end{center}
+\begin{equation}
+EstimatedPacketLossProbability = 1 - \frac{\#Echo reply}{\#Echo request}
+\end{equation}
 
 En la siguiente tabla resumimos los datos obtenidos:
 
@@ -85,31 +85,42 @@ En la siguiente tabla resumimos los datos obtenidos:
  \begin{tabular}{|c||c|c|c|c|}
     \hline
     Universidad & Berlín & Moscú & Tokio & Boston \\ \hline \hline
-    #Echo request & 10000 & 10000 & 10000 & 10000 \\ \hline
-    #Echo reply & 9984 & #### & 9997 & 9953 \\ \hline
-    EstimatedPacketLossProbability & 0,0016 & #### & 0,0003 & 0,0047 \\ \hline
+    \#Echo request & 10000 & 10000 & 10000 & 10000 \\ \hline
+    \#Echo reply & 9984 & \#\#\#\# & 9997 & 9953 \\ \hline
+    EstimatedPacketLossProbability & 0,0016 & \#\#\#\# & 0,0003 & 0,0047 \\ \hline
  \end{tabular}
 \end{center}
 
+Cabe destacar, que en el caso de la Universidad de Moscú, a pesar de realizarse reiteradas pruebas con un importante número de paquetes, no se encontraron paquetes perdidos. 
+
 \subsection{Contrastando las estimaciones con resultados previos}
-
-Acá habría que comparar las estimaciones de RTT obtenidas, con los RTT de las consignas anteriores.
-
-\subsection{Simulación del throughput}
-
-Resolver la ecuación de Mantis para cada universidad?
-
-Datos a tener en cuenta:
-
-* MSS: es el Maximum Segment Size. 
-Aparentemente MSS = MTU - TCP/IP headers.
-
-Ejemplo encontrado en: alouche.net/blog/2009/09/16/mathis-equation-and-tcp-performance/
-MSS = MTU - TCP/IP headers - for example 1460 with an MTU of 1500 (20b IP and 20b TCP headers)
-
-* MTU: es el Maximum Transfer Unit.
-https://es.wikipedia.org/wiki/Unidad_máxima_de_transferencia
+En esta parte del trabajo práctico, se realizaron estimaciones sobre los valores de RTT posibles. A continuación quisieramos presentar, para recordar, los valores premedios de RTT obtenidos utilizando un traceroute desarrollado para las cuatro Universidades: 
 
 \begin{center}
-BandWidth = \frac{data\ per\ cycle}{time\ per\ cycle} = \frac{MSS * \sqrt{\frac{3}{2}}}{EstimatedRTT * \sqrt{EstimatedPacketLossProbability}}
+ \begin{tabular}{|c||c|c|c|c|}
+    \hline
+    Universidad & Berlín & Moscú & Tokio & Boston \\ \hline \hline
+    RTT traceroute & 308,98 & 329.81 & 441.56 & 304.30 \\ \hline
+ \end{tabular}
 \end{center}
+
+Estos tiempos entran dentro de los márgenes de valores que se observan en los gráficos del RTT estimado. Cuando los valores se estabilizaron para cierto $\alpha$ y $n$, los mismo no presentan una diferencia importante con los obtenidos en la primera sección del presente trabajo práctico. 
+
+%\subsection{Simulación del throughput}
+%
+%Resolver la ecuación de Mantis para cada universidad?
+%
+%Datos a tener en cuenta:
+%
+%* MSS: es el Maximum Segment Size. 
+%Aparentemente MSS $=$ MTU $-$ TCP/IP headers.
+%
+%Ejemplo encontrado en: alouche.net/blog/2009/09/16/mathis-equation-and-tcp-performance/
+%MSS = MTU - TCP/IP headers - for example 1460 with an MTU of 1500 (20b IP and 20b TCP headers)
+%
+%* MTU: es el Maximum Transfer Unit.
+%\url{https://es.wikipedia.org/wiki/Unidad_máxima_de_transferencia}
+%
+%\begin{equation}
+%BandWidth = \frac{data\ per\ cycle}{time\ per\ cycle} = \frac{MSS * \sqrt{\frac{3}{2}}}{EstimatedRTT * %sqrt{EstimatedPacketLossProbability}}
+%\end{equation}
