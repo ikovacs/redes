@@ -75,12 +75,12 @@ def main():
     cant_request = len(rtts) + loss_packets
     print 'Echo reply: %s' % cant_reply
     print 'Echo request: %s' % cant_request
-    print 'Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request)
+    print 'Estimated Packet Loss Probability: %s' % (1 - (cant_reply / cant_request))
 
     file = open(path+'/probability_host_%s' % host, 'w+')
     file.write('Echo reply: %s' % cant_reply)
     file.write('Echo request: %s' % cant_request)
-    file.write('Estimated Packet Loss Probability: %s' % (1 - cant_reply / cant_request))
+    file.write('Estimated Packet Loss Probability: %s' % (1 - (cant_reply / cant_request)))
     file.close()
 
 
