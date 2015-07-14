@@ -2,7 +2,7 @@
 
 Finalmente realizamos una serie de experimentos contra las IP's de las universidades seleccionadas, enviando un gran volumen de sucesivos ``pings'' con la finalidad de simular una conexión (y su consiguiente envío de paquetes) frente a dichas direcciones.
 
-El envío de los pings lo hicimos por medio de un script realizado para dicha finalidad, implementado en Python y con las herramientas proporcionadas por Scapy. Por cada uno de los pings enviados (paquetes Echo Request de ICMP) se midió el tiempo requerido para obtener una respuesta (paquete Echo Reply de ICMP). Luego de realizarlos, se analizaron los resultados obtenidos, ya sea para las respuestas efectivas (la estimación del Round Trip Time correspondiente) y para los paquetes perdidos (para obtener una estimación de la probabilidad de pérdida de paquetes). 
+El envío de los pings los hicimos por medio de un script realizado para dicha finalidad, implementado en Python y con las herramientas proporcionadas por Scapy. Por cada uno de los pings enviados (paquetes Echo Request de ICMP) se midió el tiempo requerido para obtener una respuesta (paquete Echo Reply de ICMP). Luego de realizarlos, se analizaron los resultados obtenidos, ya sea para las respuestas efectivas (la estimación del Round Trip Time correspondiente) y para los paquetes perdidos (para obtener una estimación de la probabilidad de pérdida de paquetes). 
 
 El total de paquetes Echo Request enviados fue de 1000. Consideramos que sería un valor lo suficientemente grande como para tener una gran cantidad de mediciones válidas, sin ser un número que requiera demasiado tiempo de cómputo.
 
@@ -14,7 +14,8 @@ En primer lugar, para estimar los RTT de cada simulacro de conexión, analizamos
 EstimatedRTT_{[i]} = EstimatedRTT_{[i - 1]} \times \alpha + SampleRTT_{[i]} \times (1 - \alpha)
 \end{equation}
 
-Fuimos tomando algunos valores de alfa que consideramos representativos dentro del intervalo mencionado, y para cada valor seleccionado, realizamos la estimación con diversos subconjuntos de muestras RTT, cada vez de mayor volumen. Para el caso de 100 paquetes se tomaron al azar 100 muestras, luego 200 y así sucesivamente.
+Fuimos tomando algunos valores de alfa que consideramos representativos dentro del intervalo mencionado, y para cada 
+valor seleccionado, realizamos la estimación con diversos subconjuntos de muestras RTT, cada vez de mayor volumen. Para el caso de 1000 paquetes se tomaron al azar 100 muestras, luego 200 y así sucesivamente.
 
 El gráfico siguiente revela las estimaciones obtenidas para el Round Trip Time relativo al experimento con la Universidad Humboldt de Berlín. Como mencionamos previamente, fijando diversos valores de alfa fuimos tomando cantidades cada vez mayores de muestras reales. Se puede apreciar notoriamente como a mayores valores del coeficiente alfa, la estimación es mas consistente y menos suceptible a las bruscas variaciones de la muestra original (algo que se observa en el caso $\alpha$ $=$ $0$, donde EstimatedRTT$_{[i]}$ $=$ SampleRTT$_{[i]}$ para todo valor de i).
 
@@ -104,8 +105,8 @@ En esta parte del trabajo práctico, se realizaron estimaciones sobre los valore
  \end{tabular}
 \end{center}
 
-Estos tiempos entran dentro de los márgenes de valores que se observan en los gráficos del RTT estimado. Cuando los valores se estabilizaron para cierto $\alpha$ y $n$, los mismo no presentan una diferencia importante con los obtenidos en la primera sección del presente trabajo práctico. 
-
+Estos tiempos entran dentro de los márgenes de valores que se observan en los gráficos del RTT estimado. Cuando los valores se estabilizaron para cierto $\alpha$ y $n$, los mismos no presentan una diferencia importante con los obtenidos en la primera sección del presente trabajo práctico. 
+La direfencia encontrada puede deberse a las causas explicadas en la primera sección.
 %\subsection{Simulación del throughput}
 %
 %Resolver la ecuación de Mantis para cada universidad?

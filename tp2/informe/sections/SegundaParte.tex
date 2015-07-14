@@ -1,7 +1,7 @@
 \section{Gráficos y análisis}
 
-En esta parte del trabajo práctico se requiere determinar los enlaces transatlánticos que utiliza un paquete para llegar a destino. Estos enlaces se caracterizan por atravezar el Atlántico, por lo tanto poseen ciertas propiedades que los diferencian de los demás. Para poder detectar los posibles enlaces se utilizan las mediciones realizadas en la sección anterior. A partir de los valores que se obtienen al ir recorriendo cada enlace por el que pasa una señal se puede determinar donde se encuentra el mayor salto.
-Utilizandose el ZRTT calculado para cada salto se puede definir cuales son los valores que se encuentran más alejados del promedio, por lo tanto, aquellos que cumplan esa condición, serán los que representen el cambio de continente, habíendose atravezado el Atlántico.
+En esta parte del trabajo práctico se requiere determinar los enlaces transatlánticos que utiliza un paquete para llegar a destino. Estos enlaces se caracterizan por atravezar el Atlántico o el Pacífico, por lo tanto poseen ciertas propiedades que los diferencian de los demás. Para poder detectar los posibles enlaces se utilizan las mediciones realizadas en la sección anterior. A partir de los valores que se obtienen al ir recorriendo cada enlace por el que pasa una señal se puede determinar donde se encuentra el mayor salto.
+Utilizándose el ZRTT calculado para cada salto se puede definir cuales son los valores que se encuentran más alejados del promedio, por lo tanto, aquellos que cumplan esa condición, serán los que representen el cambio de continente, habiendo atravezado alguno de los océanos.
 
 Un ejemplo de cuando no funciona la metodología presentada, es aquel paquete que no utiliza por ningún enlace transatlántico. Determinaremos como trasatlánticos a aquel que no corresponda, ya que nos basamos en los tiempos transcurridos entre cada hops, por lo tanto no interesa si pasó o no por algún enlace específico.
 
@@ -32,7 +32,7 @@ Un ejemplo de cuando no funciona la metodología presentada, es aquel paquete qu
  \end{tabular}
 \end{center}
 
-En este caso se considera, observando el mapa, como enlace trasatlántico aquel que ocurre entre el hop $9$ y el $10$, ya que se atraviesa el atlántico. Sin embargo, al observar las comparaciones de valores de ZRTT esto ocurre recién en el salto del hop $10$ al $11$. Esto se debe a que, si se observan los datos sin modificar, los paquetes realizan dos caminos diferentes en cierto punto, llegando al enlace trasatlántico antes o después, según sea el caso. Al procesar los datos de manera conjunta sin distinguir esta situación, se puede concluir que es mayor la cantidad de veces que el paquete realiza el camino por el cual cruza el Atlántico luego del paquete $10$. 
+En este caso se considera, observando el mapa, como enlace trasatlántico aquel que ocurre entre el hop $9$ y el $10$, ya que se atraviesa el Atlántico. Sin embargo, al observar las comparaciones de valores de ZRTT esto ocurre recién en el salto del hop $10$ al $11$. Esto se debe a que, si se observan los datos sin modificar, los paquetes realizan dos caminos diferentes en cierto punto, llegando al enlace trasatlántico antes o después, según sea el caso. Al procesar los datos de manera conjunta sin distinguir esta situación, se puede concluir que es mayor la cantidad de veces que el paquete realiza el camino por el cual cruza el Atlántico luego del paquete $10$. 
 
 
 \subsection{Universidad de Moscú}
@@ -59,7 +59,8 @@ En este caso se considera, observando el mapa, como enlace trasatlántico aquel 
  \end{tabular}
 \end{center}
 
-De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el host de Estados Unidos y el de Inglaterra. De acuerdo a la tabla se puede notar que el mismo sería entre el número $10$ y el $11$. Este salto presentará un alto valor de RTT a aquellos hops que se encuentren luego del número $11$ ya que se incorpora el tiempo de ida y vuelta por el enlace trasatlántico. Si nos dirijimos al gráfico de la página $10$, podremos observar con el hop que presenta un valor de ZRTT más alto es el $11$, por lo que se demuestra lo que ocurre en la realidad.    
+De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el host de Estados Unidos y el de Inglaterra. De acuerdo a 
+la tabla se puede notar que el mismo sería entre el número $10$ y el $11$. Este salto presentará un valor alto de RTT a aquellos hops que se encuentren luego del número $11$ ya que se incorpora el tiempo de ida y vuelta por el enlace trasatlántico. Si nos dirijimos al gráfico de la página $10$, podremos observar con el hop que presenta un valor de ZRTT más alto es el $11$, por lo que se demuestra lo que ocurre en la realidad.    
 
 \subsection{Universidad de Tokio}
 \centerline{\includegraphics[width=0.8\textwidth]{mapas/Japon.png}}
@@ -90,7 +91,8 @@ De acuerdo al mapa, se puede observar que el salto trasatlántico se da entre el
  \end{tabular}
 \end{center}
 
-En el caso del salto del hop $8$ al $9$ puede presentarse como uno trasatlántico, ya que su tiempo de recorrida es bastante alto debido a la enorme distancia. Por otro lado, el que verdaderamente debará responderse como un enlace trasatlántico es el que va del hop de Estados Unidos, el número $16$, al de Japón, el número $17$. Se observa en los gráficos comparativos de los valores del ZRTT correspondiente a cada hop, que el del número 15 corresponde al trasatlántico. En este caso, está ocurriendo lo mismo que se vio para la universidad de Alemania. Existe más de un camino posible para poder alcanzar el hop destino, y todos deberán pasar por el enlace trasatlántico. Puede darse tanto entre dos hops determinados o los consecutivos. 
+En el caso del salto del hop $8$ al $9$ puede presentarse como uno trasatlántico, ya que su tiempo de recorrida es bastante 
+alto debido a la enorme distancia. Por otro lado, el que verdaderamente deberá responderse como un enlace trasatlántico es el que va del hop de Estados Unidos, el número $16$, al de Japón, el número $17$. Se observa en los gráficos comparativos de los valores del ZRTT correspondiente a cada hop, que el del número 15 corresponde al trasatlántico. En este caso, está ocurriendo lo mismo que se vio para la universidad de Alemania. Existe más de un camino posible para poder alcanzar el hop destino, y todos deberán pasar por el enlace trasatlántico. Puede darse tanto entre dos hops determinados o los consecutivos. 
 
 \subsection{Universidad de Boston}
 \centerline{\includegraphics[width=0.8\textwidth]{mapas/EEUU.jpg}}
